@@ -1,0 +1,41 @@
+{
+  "config": "C1",
+  "phase": "full",
+  "sessions": 48,
+  "turns": 8,
+  "router_mode": "rr",
+  "replicas": [
+    "http://127.0.0.1:8120",
+    "http://127.0.0.1:8121"
+  ],
+  "model": "Qwen/Qwen3-32B",
+  "replica_gpus": {
+    "http://127.0.0.1:8120": 2,
+    "http://127.0.0.1:8121": 3
+  },
+  "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+  "vllm_version": "0.21.0",
+  "seed": 0,
+  "calibration": {
+    "system": {
+      "words": 1998,
+      "sample_tokens": 2048,
+      "target_tokens": 2048
+    },
+    "task": {
+      "words": 1006,
+      "sample_tokens": 1024,
+      "target_tokens": 1024
+    },
+    "tool": {
+      "words": 2021,
+      "sample_tokens": 2048,
+      "target_tokens": 2048
+    }
+  },
+  "attempted": 384,
+  "errors": 0,
+  "status": "complete",
+  "stop_reasons": [],
+  "elapsed_seconds": 329.5833172025159
+}

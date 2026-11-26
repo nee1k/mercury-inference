@@ -1,0 +1,42 @@
+Starting C1 full on GPUs [2, 3], replicas ('http://127.0.0.1:8123', 'http://127.0.0.1:8124')
+Replaying 8 sessions, 8 turns through http://127.0.0.1:8125
+complete: /storage/users/neelk/mercury-inference/agent-study/results/C1/full-S8-T8-20261126T202940.659391Z/run.json
+Replaying 16 sessions, 8 turns through http://127.0.0.1:8125
+complete: /storage/users/neelk/mercury-inference/agent-study/results/C1/full-S16-T8-20261126T203053.918470Z/run.json
+Replaying 24 sessions, 8 turns through http://127.0.0.1:8125
+complete: /storage/users/neelk/mercury-inference/agent-study/results/C1/full-S24-T8-20261126T203237.179455Z/run.json
+Replaying 32 sessions, 8 turns through http://127.0.0.1:8125
+complete: /storage/users/neelk/mercury-inference/agent-study/results/C1/full-S32-T8-20261126T203504.619335Z/run.json
+Replaying 48 sessions, 8 turns through http://127.0.0.1:8125
+complete: /storage/users/neelk/mercury-inference/agent-study/results/C1/full-S48-T8-20261126T203839.705224Z/run.json
+{
+  "config": "C1",
+  "run_id": "20261126T202631.742740Z",
+  "vllm_version": "0.21.0",
+  "timestamp": "20261126T204417.342503Z",
+  "gpu_samples": [
+    {
+      "timestamp": "20261126T204417.093778Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261126T204417.342312Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 0.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    }
+  ],
+  "live_study_pids": [],
+  "errors": [],
+  "memory_released": true,
+  "source": "results/C1/released-20261126T204417.342512Z.json"
+}
+Cleanup evidence: /storage/users/neelk/mercury-inference/agent-study/results/C1/released-20261126T204417.342512Z.json
+Checkpoint evidence: /storage/users/neelk/mercury-inference/agent-study/results/C1/sweep-20261126T202631.742740Z.json
+Summary contains 12 runs

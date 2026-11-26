@@ -1,0 +1,6 @@
+Listening on http://127.0.0.1:8122 using rr
+127.0.0.1 - - [25/Nov/2026 21:29:17] "GET /v1/models HTTP/1.1" 200 -
+127.0.0.1 - - [25/Nov/2026 21:29:17] "POST /v1/chat/completions HTTP/1.1" 200 -
+127.0.0.1 - - [25/Nov/2026 21:29:17] "POST /v1/chat/completions HTTP/1.1" 200 -
+127.0.0.1 - - [25/Nov/2026 21:29:22] "POST /v1/chat/completions HTTP/1.1" 200 -
+127.0.0.1 - - [25/Nov/2026 21:29:24] "POST /v1/chat/completions HTTP/1.1" 200 -

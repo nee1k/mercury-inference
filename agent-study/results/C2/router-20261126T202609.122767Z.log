@@ -1,0 +1,12 @@
+Listening on http://127.0.0.1:8122 using sticky
+127.0.0.1 - - [26/Nov/2026 12:26:09] "GET /v1/models HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 12:26:10] "POST /study/assignments HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 12:26:10] "POST /v1/chat/completions HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 12:26:10] "POST /v1/chat/completions HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 12:26:10] "POST /v1/chat/completions HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 12:26:10] "POST /v1/chat/completions HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 12:26:15] "POST /v1/chat/completions HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 12:26:15] "POST /v1/chat/completions HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 12:26:16] "POST /v1/chat/completions HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 12:26:17] "POST /v1/chat/completions HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 12:26:23] "GET /study/assignments HTTP/1.1" 200 -

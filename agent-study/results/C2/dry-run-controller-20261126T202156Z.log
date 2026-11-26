@@ -1,0 +1,34 @@
+Starting C2 dry-run on GPUs [2, 3], replicas ('http://127.0.0.1:8120', 'http://127.0.0.1:8121')
+Replaying 4 sessions, 2 turns through http://127.0.0.1:8122
+complete: /storage/users/neelk/mercury-inference/agent-study/results/C2/dry-run-S4-T2-20261126T202609.599273Z/run.json
+{
+  "config": "C2",
+  "run_id": "20261126T202156.718656Z",
+  "vllm_version": "0.21.0",
+  "timestamp": "20261126T202631.383206Z",
+  "gpu_samples": [
+    {
+      "timestamp": "20261126T202631.133931Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261126T202631.382960Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 0.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    }
+  ],
+  "live_study_pids": [],
+  "errors": [],
+  "memory_released": true,
+  "source": "results/C2/released-20261126T202631.383218Z.json"
+}
+Cleanup evidence: /storage/users/neelk/mercury-inference/agent-study/results/C2/released-20261126T202631.383218Z.json
+Checkpoint evidence: /storage/users/neelk/mercury-inference/agent-study/results/C2/dry-checkpoint-20261126T202156.718656Z.json
+Summary contains 7 runs

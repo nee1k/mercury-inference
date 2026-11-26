@@ -1,0 +1,11 @@
+test_down_replica_moves_once (test_study.StudyTests.test_down_replica_moves_once) ... ok
+test_raw_metrics_and_onset (test_study.StudyTests.test_raw_metrics_and_onset) ... ok
+test_round_robin_only_counts_adjacent_successes (test_study.StudyTests.test_round_robin_only_counts_adjacent_successes) ... ok
+test_saved_flags_and_metric_presence (test_study.StudyTests.test_saved_flags_and_metric_presence) ... ok
+test_startup_evidence_and_paper_entry (test_study.StudyTests.test_startup_evidence_and_paper_entry) ... ok
+test_sticky_split_and_reset (test_study.StudyTests.test_sticky_split_and_reset) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.023s
+
+OK

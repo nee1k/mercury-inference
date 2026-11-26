@@ -1,0 +1,74 @@
+{
+  "c1_weights_GiB": {
+    "value": "61.03",
+    "display": "61.03",
+    "source": "results/C1/gpu2-20261126T202631.742740Z-ready.json",
+    "what": "Model memory at load in GiB"
+  },
+  "c1_kv_tokens": {
+    "value": "251104",
+    "display": "251,104",
+    "source": "results/C1/gpu2-20261126T202631.742740Z-ready.json",
+    "what": "GPU KV cache tokens per replica"
+  },
+  "c1_conc32k": {
+    "value": "7.66",
+    "display": "7.66",
+    "source": "results/C1/gpu2-20261126T202631.742740Z-ready.json",
+    "what": "Estimated concurrency per replica at 32K"
+  },
+  "c1_onset_s": {
+    "value": "48",
+    "display": "48",
+    "source": "results/C1/sweep-20261126T202631.742740Z.json",
+    "what": "Smallest tested S with preemption"
+  },
+  "c1_s8_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C1/full-S8-T8-20261126T202940.659391Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c1_s16_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C1/full-S16-T8-20261126T203053.918470Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c1_s24_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C1/full-S24-T8-20261126T203237.179455Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c1_s24_hit_pct": {
+    "value": "36.351346027441004",
+    "display": "36.4",
+    "source": "results/C1/full-S24-T8-20261126T203237.179455Z/result.json",
+    "what": "Prefix hit rate as a percentage across both GPUs"
+  },
+  "c1_s24_ttft_later_s": {
+    "value": "4.637021495075897",
+    "display": "4.637",
+    "source": "results/C1/full-S24-T8-20261126T203237.179455Z/result.json",
+    "what": "Turns 2\u20138 p95 TTFT in seconds"
+  },
+  "c1_s32_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C1/full-S32-T8-20261126T203504.619335Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c1_s32_ttft_later_s": {
+    "value": "17.54064211482182",
+    "display": "17.541",
+    "source": "results/C1/full-S32-T8-20261126T203504.619335Z/result.json",
+    "what": "Turns 2\u20138 p95 TTFT in seconds"
+  },
+  "c1_s48_preemptions": {
+    "value": "4",
+    "display": "4",
+    "source": "results/C1/full-S48-T8-20261126T203839.705224Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  }
+}

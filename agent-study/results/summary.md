@@ -1,0 +1,25 @@
+# Agent serving results
+
+Latency uses successful turns and is in seconds. Context is the final-turn range of prompt plus completion tokens. Counter changes are summed across replicas. Peak KV is the highest per-replica sample, with 100% meaning full. Peak running is the highest sampled running-request count on each replica.
+
+| Config | Run | Sessions | Turn 1 TTFT p50 / p95 | Later TTFT p50 / p95 | End to end p95 | Preemptions | Prefix hit rate | Peak KV | Peak waiting | Peak running per replica | Errors / attempted | Final context | Result |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| C1 | dry-run | 2 | 0.369 / 0.371 | 0.435 / 0.437 | 6.762 | — | — | — | — | — | 0 / 4 | 5,642–5,751 | [complete](C1/dry-run-S2-T2-20261126T052917.085819Z/run.json) · [turns](C1/dry-run-S2-T2-20261126T052917.085819Z/turns.jsonl) · [metrics](C1/dry-run-S2-T2-20261126T052917.085819Z/metrics.jsonl) |
+| C2 | dry-run | 4 | 0.497 / 0.517 | 0.351 / 0.352 | 6.849 | 0 | 48.2% | 3.7% | 0 | GPU 2 (2) / GPU 3 (2) | 0 / 8 | 5,690–5,751 | [complete](C2/dry-run-S4-T2-20261126T202609.599273Z/run.json) · [result](C2/dry-run-S4-T2-20261126T202609.599273Z/result.json) · [turns](C2/dry-run-S4-T2-20261126T202609.599273Z/turns.jsonl) · [metrics](C2/dry-run-S4-T2-20261126T202609.599273Z/metrics.jsonl) |
+| C1 | full | 8 | 0.744 / 0.760 | 0.501 / 1.551 | 10.790 | 0 | 67.8% | 29.1% | 0 | GPU 2 (5) / GPU 3 (6) | 0 / 64 | 19,582–19,911 | [complete](C1/full-S8-T8-20261126T202940.659391Z/run.json) · [result](C1/full-S8-T8-20261126T202940.659391Z/result.json) · [turns](C1/full-S8-T8-20261126T202940.659391Z/turns.jsonl) · [metrics](C1/full-S8-T8-20261126T202940.659391Z/metrics.jsonl) |
+| C1 | full | 16 | 0.976 / 1.043 | 0.670 / 1.877 | 18.484 | 0 | 66.6% | 73.8% | 0 | GPU 2 (11) / GPU 3 (12) | 0 / 128 | 19,861–19,911 | [complete](C1/full-S16-T8-20261126T203053.918470Z/run.json) · [result](C1/full-S16-T8-20261126T203053.918470Z/result.json) · [turns](C1/full-S16-T8-20261126T203053.918470Z/turns.jsonl) · [metrics](C1/full-S16-T8-20261126T203053.918470Z/metrics.jsonl) |
+| C1 | full | 24 | 1.314 / 1.501 | 0.761 / 4.637 | 32.947 | 0 | 36.4% | 98.0% | 3 | GPU 2 (15) / GPU 3 (16) | 0 / 192 | 19,399–19,911 | [complete](C1/full-S24-T8-20261126T203237.179455Z/run.json) · [result](C1/full-S24-T8-20261126T203237.179455Z/result.json) · [turns](C1/full-S24-T8-20261126T203237.179455Z/turns.jsonl) · [metrics](C1/full-S24-T8-20261126T203237.179455Z/metrics.jsonl) |
+| C1 | full | 32 | 1.396 / 1.991 | 1.154 / 17.541 | 58.308 | 0 | 23.0% | 99.9% | 7 | GPU 2 (21) / GPU 3 (22) | 0 / 256 | 19,807–19,911 | [complete](C1/full-S32-T8-20261126T203504.619335Z/run.json) · [result](C1/full-S32-T8-20261126T203504.619335Z/result.json) · [turns](C1/full-S32-T8-20261126T203504.619335Z/turns.jsonl) · [metrics](C1/full-S32-T8-20261126T203504.619335Z/metrics.jsonl) |
+| C1 | full | 48 | 2.223 / 2.974 | 1.908 / 53.140 | 92.681 | 4 | 16.6% | 100.0% | 19 | GPU 2 (28) / GPU 3 (33) | 0 / 384 | 19,649–19,911 | [complete](C1/full-S48-T8-20261126T203839.705224Z/run.json) · [result](C1/full-S48-T8-20261126T203839.705224Z/result.json) · [turns](C1/full-S48-T8-20261126T203839.705224Z/turns.jsonl) · [metrics](C1/full-S48-T8-20261126T203839.705224Z/metrics.jsonl) |
+| C1 | historical-full | 8 | 0.619 / 0.770 | 0.466 / 1.992 | 11.284 | 0 | 68.3% | 33.3% | 0 | GPU 2 (5) / GPU 3 (6) | 0 / 64 | 19,657–19,911 | [complete](C1/full-S8-T8-20261126T053812.727870Z/run.json) · [turns](C1/full-S8-T8-20261126T053812.727870Z/turns.jsonl) · [metrics](C1/full-S8-T8-20261126T053812.727870Z/metrics.jsonl) |
+| C1 | historical-full | 16 | 1.004 / 1.029 | 0.689 / 1.985 | 18.094 | 0 | 67.3% | 72.8% | 0 | GPU 2 (11) / GPU 3 (12) | 0 / 128 | 19,873–19,911 | [complete](C1/full-S16-T8-20261126T053929.020067Z/run.json) · [turns](C1/full-S16-T8-20261126T053929.020067Z/turns.jsonl) · [metrics](C1/full-S16-T8-20261126T053929.020067Z/metrics.jsonl) |
+| C1 | historical-full | 24 | 1.129 / 1.488 | 0.589 / 3.320 | 29.231 | 0 | 57.8% | 99.7% | 3 | GPU 2 (17) / GPU 3 (18) | 0 / 192 | 19,756–19,911 | [complete](C1/full-S24-T8-20261126T054109.956456Z/run.json) · [turns](C1/full-S24-T8-20261126T054109.956456Z/turns.jsonl) · [metrics](C1/full-S24-T8-20261126T054109.956456Z/metrics.jsonl) |
+| C1 | historical-full | 32 | 1.630 / 2.012 | 1.125 / 19.879 | 58.340 | 0 | 19.7% | 99.7% | 8 | GPU 2 (22) / GPU 3 (23) | 0 / 256 | 19,483–19,911 | [complete](C1/full-S32-T8-20261126T054324.907749Z/run.json) · [turns](C1/full-S32-T8-20261126T054324.907749Z/turns.jsonl) · [metrics](C1/full-S32-T8-20261126T054324.907749Z/metrics.jsonl) |
+| C1 | historical-full | 48 | 2.104 / 2.970 | 1.866 / 53.689 | 95.962 | 1 | 16.7% | 99.7% | 20 | GPU 2 (29) / GPU 3 (35) | 0 / 384 | 19,444–19,911 | [complete](C1/full-S48-T8-20261126T054700.400354Z/run.json) · [turns](C1/full-S48-T8-20261126T054700.400354Z/turns.jsonl) · [metrics](C1/full-S48-T8-20261126T054700.400354Z/metrics.jsonl) |
+
+## First observed preemption
+
+- C1 — first observed at [S=48](C1/sweep-20261126T202631.742740Z.json).
+- C2 — full sweep pending.
+- C3 — full sweep pending.
+- C4 — full sweep pending.

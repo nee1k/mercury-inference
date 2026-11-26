@@ -1,0 +1,99 @@
+{
+  "run": {
+    "config": "C2",
+    "phase": "dry-run",
+    "sessions": 4,
+    "turns": 2,
+    "run_id": "20261126T202156.718656Z",
+    "routing": {
+      "distinct_sessions_served": {
+        "http://127.0.0.1:8120": 2,
+        "http://127.0.0.1:8121": 2
+      },
+      "final_sticky_assignments": {
+        "http://127.0.0.1:8120": [
+          "s04-02",
+          "s04-03"
+        ],
+        "http://127.0.0.1:8121": [
+          "s04-00",
+          "s04-01"
+        ]
+      },
+      "assigned_sessions": {
+        "http://127.0.0.1:8120": 2,
+        "http://127.0.0.1:8121": 2
+      }
+    },
+    "router_mode": "sticky",
+    "replicas": [
+      "http://127.0.0.1:8120",
+      "http://127.0.0.1:8121"
+    ],
+    "model": "Qwen/Qwen3-32B",
+    "replica_gpus": {
+      "http://127.0.0.1:8120": 2,
+      "http://127.0.0.1:8121": 3
+    },
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "vllm_version": "0.21.0",
+    "seed": 0,
+    "calibration": {
+      "system": {
+        "words": 1998,
+        "sample_tokens": 2048,
+        "target_tokens": 2048
+      },
+      "task": {
+        "words": 1006,
+        "sample_tokens": 1024,
+        "target_tokens": 1024
+      },
+      "tool": {
+        "words": 2021,
+        "sample_tokens": 2048,
+        "target_tokens": 2048
+      }
+    },
+    "attempted": 8,
+    "errors": 0,
+    "status": "complete",
+    "stop_reasons": [],
+    "elapsed_seconds": 13.58650604635477
+  },
+  "path": "results/C2/dry-run-S4-T2-20261126T202609.599273Z/run.json",
+  "first_p50": 0.4974773577414453,
+  "first_p95": 0.517032853141427,
+  "later_p50": 0.35101557755842805,
+  "later_p95": 0.35174986501224337,
+  "e2e_p95": 6.848842319240793,
+  "valid": true,
+  "counter_increases": {
+    "vllm:num_preemptions_total": 0,
+    "vllm:prefix_cache_hits_total": 16416,
+    "vllm:prefix_cache_queries_total": 34065
+  },
+  "preemptions": 0,
+  "prefix_hit_pct": 48.19022457067371,
+  "prefix_hit_rate": 0.4819022457067371,
+  "peak_kv": 0.037150321799528485,
+  "peak_waiting": 0.0,
+  "peak_running": {
+    "http://127.0.0.1:8120": 2.0,
+    "http://127.0.0.1:8121": 2.0
+  },
+  "context_max": 5751,
+  "context_min": 5690,
+  "by_turn": {
+    "1": {
+      "http://127.0.0.1:8121": 2,
+      "http://127.0.0.1:8120": 2
+    },
+    "2": {
+      "http://127.0.0.1:8121": 2,
+      "http://127.0.0.1:8120": 2
+    }
+  },
+  "turns_path": "results/C2/dry-run-S4-T2-20261126T202609.599273Z/turns.jsonl",
+  "metrics_path": "results/C2/dry-run-S4-T2-20261126T202609.599273Z/metrics.jsonl"
+}

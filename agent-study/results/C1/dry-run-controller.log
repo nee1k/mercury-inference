@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/storage/users/neelk/mercury-inference/agent-study/run_config.py", line 14, in <module>
+    from serve import FLAGS, verify_flags
+ImportError: cannot import name 'FLAGS' from 'serve' (/storage/users/neelk/mercury-inference/model-size-study/scripts/serve.py)

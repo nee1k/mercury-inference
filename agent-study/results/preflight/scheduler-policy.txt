@@ -1,0 +1,51 @@
+Mercury E4S vLLM scheduler source used to interpret the C1 run.
+
+/packages/e4s/26.06/mvapich-5.0.1-zfp-cuda13.2/python/pkgs/python-3.12.13/lib/python3.12/site-packages/vllm/config/scheduler.py:136
+136:     If set to None, the default value will be determined based on the environment
+137:     and starting configuration.
+138:     """
+139: 
+140:     scheduler_reserve_full_isl: bool = True
+141:     """If True, the scheduler checks whether the full input sequence length
+142:     fits in the KV cache before admitting a new request, rather than only
+143:     checking the first chunk. Prevents over-admission and KV cache thrashing
+
+/packages/e4s/26.06/mvapich-5.0.1-zfp-cuda13.2/python/pkgs/python-3.12.13/lib/python3.12/site-packages/vllm/v1/core/sched/scheduler.py:424
+424:                 while True:
+425:                     new_blocks = self.kv_cache_manager.allocate_slots(
+426:                         request,
+427:                         num_new_tokens,
+428:                         num_lookahead_tokens=self.num_lookahead_tokens,
+429:                     )
+430: 
+431:                     if new_blocks is not None:
+432:                         # The request can be scheduled.
+433:                         break
+434: 
+435:                     # The request cannot be scheduled.
+436:                     # Preempt the lowest-priority request.
+437:                     if self.policy == SchedulingPolicy.PRIORITY:
+
+/packages/e4s/26.06/mvapich-5.0.1-zfp-cuda13.2/python/pkgs/python-3.12.13/lib/python3.12/site-packages/vllm/v1/core/sched/scheduler.py:700
+700:                     )
+701: 
+702:                 new_blocks = self.kv_cache_manager.allocate_slots(
+703:                     request,
+704:                     num_new_tokens,
+705:                     num_new_computed_tokens=num_new_local_computed_tokens,
+706:                     new_computed_blocks=new_computed_blocks,
+707:                     num_lookahead_tokens=effective_lookahead_tokens,
+708:                     num_external_computed_tokens=num_external_computed_tokens,
+709:                     delay_cache_blocks=load_kv_async,
+710:                     num_encoder_tokens=num_encoder_tokens,
+711:                     full_sequence_must_fit=self.scheduler_reserve_full_isl,
+712:                 )
+713: 
+714:                 if new_blocks is None:
+715:                     # The request cannot be scheduled.
+716: 
+717:                     # NOTE: we need to untouch the request from the encode cache
+718:                     # manager
+719:                     if request.has_encoder_inputs:
+720:                         self.encoder_cache_manager.free(request)
+721:                     break

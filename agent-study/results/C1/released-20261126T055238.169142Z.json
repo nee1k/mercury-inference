@@ -1,0 +1,27 @@
+{
+  "config": "C1",
+  "run_id": "20261126T053544.272509Z",
+  "vllm_version": "0.21.0",
+  "timestamp": "20261126T055238.169133Z",
+  "gpu_samples": [
+    {
+      "timestamp": "20261126T055237.923212Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261126T055238.168945Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 0.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    }
+  ],
+  "live_study_pids": [],
+  "errors": [],
+  "memory_released": true
+}
