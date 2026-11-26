@@ -1,0 +1,13 @@
+{
+  "selected": ["Qwen/Qwen3-8B"],
+  "config": "qwen3-8b-bf16-tp1",
+  "gpu_ids": [0],
+  "precision": "BF16",
+  "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "weight_download_authorized": false,
+  "status": "PHASE2_PASSED_AWAITING_GO",
+  "phase2_evidence": "results/qwen3-8b-bf16-tp1/dry-run-20261120T201240.785325Z/dry-run.json",
+  "server_status": "READY_MANUAL_SESSION_STARTED_BY_USER",
+  "active_server_state": "state/qwen3-8b-bf16-tp1.json",
+  "scope": "Qwen3-8B only for now. Other candidate models, precision pair and multi-GPU configurations are not selected for execution."
+}

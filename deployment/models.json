@@ -1,0 +1,11 @@
+[
+  {"key":"qwen3-8b","repo":"Qwen/Qwen3-8B","gpu":0,"port":8001,"memory":0.30,"external":true},
+  {"key":"qwen3-4b","repo":"Qwen/Qwen3-4B","gpu":0,"port":8002,"memory":0.13},
+  {"key":"qwen3-14b","repo":"Qwen/Qwen3-14B","gpu":0,"port":8003,"memory":0.27},
+  {"key":"qwen3-32b","repo":"Qwen/Qwen3-32B","gpu":1,"port":8004,"memory":0.55},
+  {"key":"gemma3-12b","repo":"google/gemma-3-12b-it","gpu":1,"port":8005,"memory":0.26,"text_only":true},
+  {"key":"gemma3-27b","repo":"google/gemma-3-27b-it","gpu":2,"port":8007,"memory":0.48,"text_only":true},
+  {"key":"llama31-8b","repo":"meta-llama/Llama-3.1-8B-Instruct","gpu":2,"port":8008,"memory":0.22},
+  {"key":"mistral-small31","repo":"mistralai/Mistral-Small-3.1-24B-Instruct-2503","gpu":3,"port":8009,"memory":0.42,"text_only":true,"mistral":true},
+  {"key":"qwen3-30b-a3b","repo":"Qwen/Qwen3-30B-A3B","gpu":3,"port":8010,"memory":0.48}
+]

@@ -1,0 +1,17 @@
+# Offline cached snapshot. Do not replace with a moving model revision.
+model: /home/users/neelk/.cache/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218
+tokenizer: /home/users/neelk/.cache/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218
+served-model-name: Qwen/Qwen3-8B
+revision: b968826d9c46dd6066d109eabc6255188de91218
+dtype: bfloat16
+tensor-parallel-size: 1
+distributed-executor-backend: mp
+max-model-len: 32768
+gpu-memory-utilization: 0.90
+seed: 0
+trust-remote-code: false
+enable-auto-tool-choice: true
+tool-call-parser: hermes
+reasoning-parser: qwen3
+# Prefix caching is intentionally left at the installed default.
+# Host and free port are supplied by the launcher.

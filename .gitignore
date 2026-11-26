@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+.env
+logs/
+*.log
+results/
+/deployment/state/
+/model-size-study/state/*
+!/model-size-study/state/selection.json

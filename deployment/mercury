@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if ! type module >/dev/null 2>&1; then
+  source /etc/profile.d/modules.sh
+fi
+module load gcc/11.4 cuda/13.2 mvapich/5.0.1-plus-cuda13.2 e4s/26.06/mvapich-5.0.1-zfp-cuda13.2
+export LD_LIBRARY_PATH="/packages/gcc/13.4/lib64:/packages/gcc/13.4/lib:${LD_LIBRARY_PATH:-}"
+export MAX_JOBS="${MAX_JOBS:-8}"
+export HF_HUB_DOWNLOAD_TIMEOUT=120
+export HF_HUB_ETAG_TIMEOUT=30
+exec /packages/e4s/26.06/mvapich-5.0.1-zfp-cuda13.2/python/pkgs/python-3.12.13/bin/python "$(dirname "$(readlink -f "$0")")/manage.py" "$@"
