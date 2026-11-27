@@ -48,6 +48,12 @@ def summarize_run(path):
                 deltas[metric] = sum(
                     int(values[-1][metric] - values[0][metric]) for values in series.values()
                 )
+    successful = [row for row in turns if row["error"] is None]
+    prompt_tokens = sum(row["prompt_tokens"] for row in successful)
+    # Historical traces predate cached-token capture.
+    request_hit_pct = None
+    if prompt_tokens and all("cached_tokens" in row for row in successful):
+        request_hit_pct = 100 * sum(row["cached_tokens"] for row in successful) / prompt_tokens
     contexts = [row["prompt_tokens"] + row["completion_tokens"] for row in turns
                 if row["turn"] == run["turns"] and not row["error"]]
     replica_values = [row for rows in series.values() for row in rows]
@@ -73,6 +79,7 @@ def summarize_run(path):
         "first_p95": percentile(first, 0.95), "later_p50": percentile(later, 0.50),
         "later_p95": percentile(later, 0.95), "e2e_p95": percentile(latency, 0.95),
         "valid": valid, "counter_increases": deltas, "preemptions": deltas[preempt],
+        "request_hit_pct": request_hit_pct,
         "prefix_hit_pct": 100 * deltas[hits] / deltas[queries]
         if deltas[hits] is not None and deltas[queries] else None,
         "prefix_hit_rate": deltas[hits] / deltas[queries]

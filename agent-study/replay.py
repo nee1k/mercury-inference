@@ -129,6 +129,10 @@ def routing_stats(results, replicas, assignments):
     return stats
 
 
+def cached_tokens(usage):
+    return (usage.get("prompt_tokens_details") or {}).get("cached_tokens") or 0
+
+
 def stream_turn(router, messages, session, abort):
     start = time.monotonic()
     ttft = None
@@ -173,7 +177,7 @@ def stream_turn(router, messages, session, abort):
     return {
         "session": session, "ttft_seconds": ttft,
         "end_to_end_seconds": time.monotonic() - start,
-        "prompt_tokens": usage.get("prompt_tokens"),
+        "prompt_tokens": usage.get("prompt_tokens"), "cached_tokens": cached_tokens(usage),
         "completion_tokens": usage.get("completion_tokens"), "replica": replica,
         "finish_reason": finish, "stream_done": bool(status.get("done")), "error": error,
     }, "".join(content)
@@ -319,6 +323,10 @@ def replay(config, router, replicas, sessions, turns, phase):
             assignments = {}
             cancel(f"Could not read final sticky assignments: {exc}")
     routing = routing_stats(results, replicas, assignments)
+    if config == "C1" and phase == "dry-run" and not aborted.is_set():
+        second = [row for row in results if row["turn"] == 2 and row["error"] is None]
+        if len(second) != sessions or any(row["cached_tokens"] <= 0 for row in second):
+            cancel("C1 dry run requires positive cached_tokens for every second turn")
     if config == "C2" and phase == "dry-run" and not aborted.is_set():
         stable = all(assignments.get(row["session"]) == row["replica"] for row in results)
         if (not stable or list(routing["assigned_sessions"].values()) != [2, 2]

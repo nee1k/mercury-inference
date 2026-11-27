@@ -57,6 +57,12 @@ The first observed preemption was at S=48, on GPU 3. All 1,024 turns completed s
 
 At higher load the prefix hit rate fell and later-turn p95 TTFT rose. The sweep changed load while keeping round-robin routing, so the observed slowdown includes queueing and changed cache reuse. C2 will provide the routing comparison. Both replicas and the router stopped and the selected GPUs returned to their pre-run idle memory baselines. [Full results](results/summary.md) · [Cleanup result](results/C1/released-20261126T055238.169142Z.json)
 
+## Prefix-cache measurements
+
+`request_hit_pct` is the percentage of successful prompt tokens served from cache. The replay sums the cached tokens in final stream usage across successful turns and divides by their total prompt tokens. A missing or null usage detail contributes zero cached tokens. Earlier traces lack this measurement. The counter-based `prefix_hit_pct` uses the two replicas’ hit and query deltas. In vLLM 0.21.0, repeat lookups for waiting requests can give those requests extra weight. [Upstream fix and explanation](https://github.com/vllm-project/vllm/pull/48860)
+
+For C4, the request metric includes tokens loaded from the host tier. The scheduler passes the connector’s external token count into prefill statistics. vLLM adds local and external cached tokens, and chat streaming writes that total into usage. The aggregate alone cannot identify the host share. [v0.21.0 scheduler](https://github.com/vllm-project/vllm/blob/v0.21.0/vllm/v1/core/sched/scheduler.py#L580-L614) · [Cached-token assignment](https://github.com/vllm-project/vllm/blob/v0.21.0/vllm/v1/metrics/stats.py#L266-L273) · [Streaming usage](https://github.com/vllm-project/vllm/blob/v0.21.0/vllm/entrypoints/openai/chat_completion/serving.py#L949-L952)
+
 ## Method
 
 - Each session sees the same system prompt, a seeded private task and a seeded tool output per follow-up turn. The replay measures text lengths with the local model tokenizer, appends the actual prior answer and captures usage from the stream. The synthetic workload measures serving behavior.

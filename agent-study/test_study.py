@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import patch
 from urllib.error import URLError
 
-from replay import FULL_SESSIONS, METRICS, metric_values, routing_stats
+from replay import FULL_SESSIONS, METRICS, cached_tokens, metric_values, routing_stats
 from router import Proxy, Router
 from serve import FLAGS, startup_evidence, verify_flags
 from study import CONFIGS
@@ -69,6 +69,17 @@ class StudyTests(unittest.TestCase):
                          {"numerator": 1, "denominator": 1, "share": 1.0})
         self.assertEqual(stats["distinct_sessions_served"], dict.fromkeys(REPLICAS, 1))
 
+    def test_cached_tokens(self):
+        for usage, expected in [
+            ({"prompt_tokens_details": {"cached_tokens": 32}}, 32),
+            ({"prompt_tokens_details": {"cached_tokens": None}}, 0),
+            ({"prompt_tokens_details": {}}, 0),
+            ({"prompt_tokens_details": None}, 0),
+            ({}, 0),
+        ]:
+            with self.subTest(usage=usage):
+                self.assertEqual(cached_tokens(usage), expected)
+
     def test_saved_flags_and_metric_presence(self):
         for _, extra in CONFIGS.values():
             verify_flags((*FLAGS, "--port", *extra))
@@ -103,7 +114,7 @@ class StudyTests(unittest.TestCase):
                                        "replicas": REPLICAS}))
             turns = [dict(session="s", turn=turn, replica=REPLICAS[0], error=None,
                           stream_done=True, finish_reason="stop", ttft_seconds=0.5 * turn,
-                          end_to_end_seconds=2, prompt_tokens=1, completion_tokens=1)
+                          end_to_end_seconds=2, prompt_tokens=turn, cached_tokens=turn - 1, completion_tokens=1)
                      for turn in (1, 2)]
             (root / "turns.jsonl").write_text("\n".join(map(json.dumps, turns)))
             samples = [[{"replica": replica, "metrics": dict.fromkeys(METRICS, level)}
@@ -112,6 +123,13 @@ class StudyTests(unittest.TestCase):
             with patch("summarize.ROOT", root):
                 _, row = write_run_result(run)
             self.assertTrue(row["valid"])
+            self.assertAlmostEqual(row["request_hit_pct"], 100 / 3)
+            failed = {**turns[0], "error": "stream interrupted", "prompt_tokens": 1000}
+            with (root / "turns.jsonl").open("a") as log:
+                log.write("\n" + json.dumps(failed))
+            with patch("summarize.ROOT", root):
+                _, partial = write_run_result(run)
+            self.assertAlmostEqual(partial["request_hit_pct"], 100 / 3)
             self.assertEqual(row["preemptions"], 4)
             self.assertEqual(row["prefix_hit_pct"], 100)
             self.assertEqual(row["later_p95"], 1)

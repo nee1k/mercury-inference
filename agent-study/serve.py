@@ -19,7 +19,7 @@ FLAGS = (
     "--host", "127.0.0.1", "--served-model-name", MODEL, "--dtype", "bfloat16",
     "--tensor-parallel-size", "1", "--max-model-len", str(MAX_CONTEXT),
     "--gpu-memory-utilization", "0.90", "--seed", "0",
-    "--distributed-executor-backend", "mp",
+    "--distributed-executor-backend", "mp", "--enable-prompt-tokens-details",
 )
 ANSI = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 
