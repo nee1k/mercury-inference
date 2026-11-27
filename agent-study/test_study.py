@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import patch
 from urllib.error import URLError
 
-from replay import FULL_SESSIONS, METRICS, cached_tokens, metric_values, routing_stats
+from replay import EXTERNAL_COUNTERS, FULL_SESSIONS, METRICS, cached_tokens, metric_values, routing_stats
 from router import Proxy, Router
 from serve import FLAGS, startup_evidence, verify_flags
 from study import CONFIGS
@@ -85,6 +85,9 @@ class StudyTests(unittest.TestCase):
             verify_flags((*FLAGS, "--port", *extra))
         metrics = [f'{metric}{{engine="0"}} {i}.0' for i, metric in enumerate(METRICS)]
         self.assertEqual(metric_values("\n".join(metrics)), dict(zip(METRICS, range(len(METRICS)))))
+        external = [f'{metric}{{engine="0"}} 0' for metric in EXTERNAL_COUNTERS]
+        parsed = metric_values("\n".join(metrics + external))
+        self.assertEqual([parsed[name] for name in EXTERNAL_COUNTERS], [0, 0])
         with self.assertRaises(ValueError):
             metric_values("\n".join(metrics[:-1]))
 

@@ -50,12 +50,14 @@ REQUEST_SETTINGS = {
 def base_url(port):
     if port not in PORTS:
         raise ValueError("Study ports must be in 8120–8129")
-    return f"http://127.0.0.1:{port}"
+    return f"http://localhost:{port}"
 
 
 def local_url(url):
     parsed = urlsplit(url)
     canonical = base_url(parsed.port)
+    if parsed.hostname == "127.0.0.1" and url.rstrip("/") == canonical.replace("localhost", parsed.hostname):
+        return url.rstrip("/")
     if url.rstrip("/") != canonical:
         raise ValueError("Expected a 127.0.0.1 study base URL")
     return canonical
@@ -123,16 +125,23 @@ def launch(name, command, log, **fields):
                     latest["gpu_util_percent"] or latest["uuid"] != fields["gpu_uuid"]):
                 raise RuntimeError(f"GPU {fields['gpu']} changed after the idle check")
         with log.open("xb") as output:
+            # Persist only the three numerical startup messages needed by the study.
+            pattern = (r"Model loading took [0-9.]+ GiB memory and [0-9.]+ seconds|"
+                       r"GPU KV cache size: [0-9,]+ tokens|"
+                       r"Maximum concurrency for [0-9,]+ tokens per request: [0-9.]+x")
+            filtered = subprocess.Popen(["grep", "--line-buffered", "-Eo", pattern],
+                                        stdin=subprocess.PIPE, stdout=output)
             gpu = fields.get("gpu")
             process = subprocess.Popen(
                 ["setsid", "nohup", *command], stdin=subprocess.DEVNULL,
-                stdout=output, stderr=subprocess.STDOUT,
+                stdout=filtered.stdin, stderr=subprocess.STDOUT,
                 env=runtime_env([gpu]) if gpu is not None else None,
             )
+            filtered.stdin.close()
         handle = os.pidfd_open(process.pid)
         try:
             record = {**identity(process.pid), **fields, "name": name,
-                      "command": command, "log": str(log), "started_at": stamp()}
+                      "log": str(log.relative_to(ROOT)), "started_at": stamp()}
             with (STATE / "pids.txt").open("a") as pids:
                 pids.write(f"{process.pid}\n")
                 pids.flush()

@@ -122,7 +122,7 @@ def paper_entry(path, field, what, format_spec=""):
             "source": relative(path), "what": what}
 
 
-def write_paper_values(sweeps):
+def write_paper_values(sweeps, output=RESULTS / "paper_values.json", *, include_request_hits=False):
     paper = {}
 
     def add(key, path, field, what, spec=""):
@@ -143,13 +143,16 @@ def write_paper_values(sweeps):
             if not row["valid"]:
                 continue
             add(f"{key}_s{size}_preemptions", result, "preemptions", "Preemption increase across both GPUs")
+            if include_request_hits:
+                add(f"{key}_s{size}_request_hit_pct", result, "request_hit_pct",
+                    "Percentage of successful prompt tokens served from cache", ".1f")
             if int(size) == 24 and row["prefix_hit_pct"] is not None:
                 add(f"{key}_s24_hit_pct", result, "prefix_hit_pct", "Prefix hit rate as a percentage across both GPUs", ".1f")
             if int(size) in (24, 32):
                 add(f"{key}_s{size}_ttft_later_s", result, "later_p95", "Turns 2–8 p95 TTFT in seconds", ".3f")
         if config in ("C3", "C4") and sweep["function_checks"]:
             add(f"{key}_function_checks", ROOT / sweep["function_checks"], "status", "Protocol check outcome")
-    save(RESULTS / "paper_values.json", paper)
+    save(output, paper)
 
 
 def current_sweeps():

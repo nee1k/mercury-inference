@@ -2,7 +2,6 @@
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor
-from contextlib import ExitStack
 import json
 import os
 import subprocess
@@ -11,6 +10,7 @@ import time
 from unittest.mock import patch
 from urllib.error import URLError
 
+import c1_probe
 from replay import FULL_SESSIONS, replay
 from serve import FLAGS, verify_flags
 from shutdown import release
@@ -74,22 +74,18 @@ def start_router(config, run_id, router_port, replicas):
 
 
 def controllers(config, run_id, gpus, ports):
-    folder = RESULTS / config
-    with ExitStack() as files:
-        launchers = []
-        for gpu, port in zip(gpus, ports):
-            out = files.enter_context((folder / f"launch-gpu{gpu}-{stamp()}.log").open("x"))
-            command = [str(ROOT / "serve.sh"), config, str(gpu), str(port), *CONFIGS[config][1]]
-            env = {**os.environ, "MERCURY_AGENT_STUDY_RUN_ID": run_id}
-            launchers.append(subprocess.Popen(command, stdout=out, stderr=subprocess.STDOUT,
-                                               env=env))
-        expires = time.monotonic() + 950
-        while any(process.poll() is None for process in launchers):
-            if time.monotonic() >= expires:
-                raise TimeoutError("Replica startup exceeded the controller deadline")
-            time.sleep(2)
-        if any(process.returncode != 0 for process in launchers):
-            raise RuntimeError("Replica startup failed; see launcher logs")
+    launchers = []
+    for gpu, port in zip(gpus, ports):
+        command = [str(ROOT / "serve.sh"), config, str(gpu), str(port), *CONFIGS[config][1]]
+        env = {**os.environ, "MERCURY_AGENT_STUDY_RUN_ID": run_id}
+        launchers.append(subprocess.Popen(command, env=env))
+    expires = time.monotonic() + 950
+    while any(process.poll() is None for process in launchers):
+        if time.monotonic() >= expires:
+            raise TimeoutError("Replica startup exceeded the controller deadline")
+        time.sleep(2)
+    if any(process.returncode != 0 for process in launchers):
+        raise RuntimeError("Replica startup failed; see launcher logs")
 
 
 def select_gpus(preferred, folder, run_id):
@@ -100,16 +96,10 @@ def select_gpus(preferred, folder, run_id):
             remaining = [gpu for gpu in range(4) if gpu not in preferred]
             checks.update(zip(remaining, pool.map(sample_idle, remaining)))
     idle = [gpu for gpu, check in checks.items() if check["idle"]]
-    for check in checks.values():
-        for sample in check["samples"]:
-            sample["owners"] = {pid: subprocess.run(
-                ["ps", "-o", "user=,comm=", "-p", str(pid)], capture_output=True,
-                text=True, timeout=10).stdout.strip() or "owner not visible"
-                for pid in sample["pids"]}
     path = folder / f"prelaunch-{run_id}.json"
     save(path, {"checks": checks, "idle": idle, "vllm_version": VERSION})
     if len(idle) < 2:
-        raise RuntimeError(f"Fewer than two GPUs passed the idle check; occupancy and owners: {path}")
+        raise RuntimeError(f"Fewer than two GPUs passed the idle check; see {path.name}")
     return idle[:2]
 
 
@@ -157,6 +147,9 @@ def run_config(config, phase, gpus, ports):
         ports = select_ports(ports)
         replicas = tuple(base_url(port) for port in ports[:2])
         print(f"Starting {config} {phase} on GPUs {gpus}, replicas {replicas}", flush=True)
+        if config == "C1" and phase == "full":
+            c1_probe.record(["date", "-u", "+%FT%TZ"])
+            c1_probe.gpu_facts(gpus)
         attempted_launch = True
         controllers(config, run_id, gpus, ports[:2])
         sweep["ready"] = [relative(folder / f"gpu{gpu}-{run_id}-ready.json") for gpu in gpus]
@@ -173,10 +166,12 @@ def run_config(config, phase, gpus, ports):
                 raise RuntimeError("Replay did not complete; remaining shapes are paused")
         if phase == "full":
             sweep["onset_s"] = sweep_onset(rows)
+            if config == "C1" and all(row["valid"] for row in rows.values()):
+                c1_probe.record(["c1_probe.py", "live", str(gpus[0])], study_python=True)
         if all(row["valid"] for row in rows.values()):
             sweep["status"] = "complete"
     except Exception as exc:
-        sweep["reason"] = f"{type(exc).__name__}: {exc}"
+        sweep["reason"] = type(exc).__name__
         raise
     finally:
         try:
@@ -190,7 +185,16 @@ def run_config(config, phase, gpus, ports):
             path = folder / f"{prefix}-{run_id}.json"
             save(path, sweep)
             print(f"Checkpoint evidence: {path}", flush=True)
-            write_paper_values(current_sweeps())
+            if config == "C1":
+                if phase == "full" and sweep["status"] == "complete":
+                    write_paper_values({"C1": (path, sweep)},
+                                       RESULTS / "paper_values_c1_rerun.json",
+                                       include_request_hits=True)
+            else:
+                write_paper_values(current_sweeps())
+            if config == "C1" and phase == "full" and sweep["status"] == "complete":
+                for gpu in gpus:
+                    c1_probe.record(["c1_probe.py", "copies", str(gpu)], study_python=True)
             summary = make_summary()
             print(f"Summary contains {len(summary)} runs", flush=True)
     return sweep["status"] == "complete"
@@ -207,6 +211,6 @@ if __name__ == "__main__":
         ok = run_config(args.config, args.phase, args.gpus, args.ports)
     except Exception as exc:
         save(RESULTS / args.config / f"failure-{stamp()}.json",
-             {"error": f"{type(exc).__name__}: {exc}", "vllm_version": VERSION})
+             {"error": type(exc).__name__, "vllm_version": VERSION})
         raise
     raise SystemExit(not ok)

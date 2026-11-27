@@ -22,6 +22,8 @@ COUNTERS = (
     "vllm:prefix_cache_hits_total",
     "vllm:prefix_cache_queries_total",
 )
+EXTERNAL_COUNTERS = ("vllm:external_prefix_cache_hits_total",
+                     "vllm:external_prefix_cache_queries_total")
 KV_USAGE = "vllm:kv_cache_usage_perc"
 WAITING = "vllm:num_requests_waiting"
 RUNNING = "vllm:num_requests_running"
@@ -82,17 +84,17 @@ def calibrate(base):
 
 
 def metric_values(raw):
-    values = {name: [] for name in METRICS}
+    values = {name: [] for name in (*METRICS, *EXTERNAL_COUNTERS)}
     for line in raw.splitlines():
         if (match := LINE.fullmatch(line)) and match["name"] in values:
             number = float(match["value"])
             if not math.isfinite(number):
                 raise ValueError(f"Non-finite metric {match['name']}")
             values[match["name"]].append(number)
-    missing = [name for name, series in values.items() if len(series) != 1]
+    missing = [name for name, series in values.items() if len(series) > 1 or (name in METRICS and not series)]
     if missing:
         raise ValueError(f"Expected a single TP1 engine sample for {missing}")
-    return {name: series[0] for name, series in values.items()}
+    return {name: series[0] for name, series in values.items() if series}
 
 
 def scrape(base):
@@ -170,9 +172,9 @@ def stream_turn(router, messages, session, abort):
     except HTTPError as exc:
         replica = exc.headers.get("X-Replica")
         with exc:
-            error = f"HTTP {exc.code}: " + exc.read(4096).decode(errors="replace")
+            error = f"HTTP {exc.code}" + (" out of memory" if OOM.search(exc.read(4096).decode(errors="replace")) else "")
     except (OSError, RuntimeError, ValueError, KeyError) as exc:
-        error = f"{type(exc).__name__}: {exc}"
+        error = "out of memory" if OOM.search(str(exc)) else type(exc).__name__
     usage = usage or {}
     return {
         "session": session, "ttft_seconds": ttft,
