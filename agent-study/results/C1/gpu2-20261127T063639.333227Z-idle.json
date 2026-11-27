@@ -1,0 +1,93 @@
+{
+  "idle": true,
+  "samples": [
+    {
+      "timestamp": "20261127T063651.540941Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261127T063652.540529Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261127T063653.541319Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261127T063654.544861Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261127T063655.543718Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261127T063656.547330Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261127T063657.543685Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261127T063658.541439Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261127T063659.688494Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261127T063700.548280Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261127T063701.544798Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    }
+  ]
+}

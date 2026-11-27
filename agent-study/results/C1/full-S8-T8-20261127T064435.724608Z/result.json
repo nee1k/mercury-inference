@@ -1,0 +1,115 @@
+{
+  "run": {
+    "config": "C1",
+    "phase": "full",
+    "sessions": 8,
+    "turns": 8,
+    "run_id": "20261127T064122.311200Z",
+    "routing": {
+      "distinct_sessions_served": {
+        "http://localhost:8123": 7,
+        "http://localhost:8124": 8
+      },
+      "consecutive_turn_replica_changes": {
+        "numerator": 22,
+        "denominator": 56,
+        "share": 0.39285714285714285
+      }
+    },
+    "router_mode": "rr",
+    "replicas": [
+      "http://localhost:8123",
+      "http://localhost:8124"
+    ],
+    "model": "Qwen/Qwen3-32B",
+    "replica_gpus": {
+      "http://localhost:8123": 2,
+      "http://localhost:8124": 3
+    },
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "vllm_version": "0.21.0",
+    "seed": 0,
+    "calibration": {
+      "system": {
+        "words": 1998,
+        "sample_tokens": 2048,
+        "target_tokens": 2048
+      },
+      "task": {
+        "words": 1006,
+        "sample_tokens": 1024,
+        "target_tokens": 1024
+      },
+      "tool": {
+        "words": 2021,
+        "sample_tokens": 2048,
+        "target_tokens": 2048
+      }
+    },
+    "attempted": 64,
+    "errors": 0,
+    "status": "complete",
+    "stop_reasons": [],
+    "elapsed_seconds": 72.8964666435495
+  },
+  "path": "results/C1/full-S8-T8-20261127T064435.724608Z/run.json",
+  "first_p50": 0.7483564419671893,
+  "first_p95": 0.7496659584343434,
+  "later_p50": 0.515309443231672,
+  "later_p95": 1.2431071617174894,
+  "e2e_p95": 10.789251227723435,
+  "valid": true,
+  "counter_increases": {
+    "vllm:num_preemptions_total": 0,
+    "vllm:prefix_cache_hits_total": 507200,
+    "vllm:prefix_cache_queries_total": 725550
+  },
+  "preemptions": 0,
+  "request_hit_pct": 69.90558886362071,
+  "prefix_hit_pct": 69.90558886362071,
+  "prefix_hit_rate": 0.699055888636207,
+  "peak_kv": 0.3416172815905181,
+  "peak_waiting": 0.0,
+  "peak_running": {
+    "http://localhost:8123": 5.0,
+    "http://localhost:8124": 6.0
+  },
+  "context_max": 19911,
+  "context_min": 19812,
+  "by_turn": {
+    "1": {
+      "http://localhost:8124": 4,
+      "http://localhost:8123": 4
+    },
+    "2": {
+      "http://localhost:8124": 4,
+      "http://localhost:8123": 4
+    },
+    "3": {
+      "http://localhost:8124": 4,
+      "http://localhost:8123": 4
+    },
+    "4": {
+      "http://localhost:8124": 4,
+      "http://localhost:8123": 4
+    },
+    "5": {
+      "http://localhost:8124": 4,
+      "http://localhost:8123": 4
+    },
+    "6": {
+      "http://localhost:8124": 4,
+      "http://localhost:8123": 4
+    },
+    "7": {
+      "http://localhost:8124": 4,
+      "http://localhost:8123": 4
+    },
+    "8": {
+      "http://localhost:8124": 4,
+      "http://localhost:8123": 4
+    }
+  },
+  "turns_path": "results/C1/full-S8-T8-20261127T064435.724608Z/turns.jsonl",
+  "metrics_path": "results/C1/full-S8-T8-20261127T064435.724608Z/metrics.jsonl"
+}

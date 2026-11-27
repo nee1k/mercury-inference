@@ -23,3 +23,15 @@ Latency uses successful turns and is in seconds. Context is the final-turn range
 - C2 — full sweep pending.
 - C3 — full sweep pending.
 - C4 — full sweep pending.
+
+## C1 cache measurement rerun
+
+The baseline is the sweep referenced by `paper_values.json`. Later-turn p95 TTFT covers turns 2–8. Each source links to the corresponding per-load result.
+
+| S | Baseline prefix hit % | Rerun request hit % | Rerun prefix hit % | Later-turn p95 TTFT, baseline → rerun (s) | Peak waiting, baseline → rerun | Preemptions, baseline → rerun | Sources |
+|---:|---:|---:|---:|---:|---:|---:|---|
+| 8 | 67.84 | 69.91 | 69.91 | 1.551 → 1.243 | 0 → 0 | 0 → 0 | [Baseline](C1/full-S8-T8-20261126T202940.659391Z/result.json) · [Rerun](C1/full-S8-T8-20261127T064435.724608Z/result.json) |
+| 16 | 66.61 | 68.24 | 68.24 | 1.877 → 1.719 | 0 → 0 | 0 → 0 | [Baseline](C1/full-S16-T8-20261126T203053.918470Z/result.json) · [Rerun](C1/full-S16-T8-20261127T064549.437144Z/result.json) |
+| 24 | 36.35 | 61.75 | 50.85 | 4.637 → 3.382 | 3 → 1 | 0 → 0 | [Baseline](C1/full-S24-T8-20261126T203237.179455Z/result.json) · [Rerun](C1/full-S24-T8-20261127T064729.483884Z/result.json) |
+| 32 | 23.01 | 47.39 | 20.89 | 17.541 → 18.095 | 7 → 8 | 0 → 0 | [Baseline](C1/full-S32-T8-20261126T203504.619335Z/result.json) · [Rerun](C1/full-S32-T8-20261127T064948.564899Z/result.json) |
+| 48 | 16.62 | 41.41 | 16.85 | 53.140 → 56.012 | 19 → 20 | 4 → 3 | [Baseline](C1/full-S48-T8-20261126T203839.705224Z/result.json) · [Rerun](C1/full-S48-T8-20261127T065319.773208Z/result.json) |

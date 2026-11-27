@@ -1,0 +1,115 @@
+{
+  "run": {
+    "config": "C1",
+    "phase": "full",
+    "sessions": 48,
+    "turns": 8,
+    "run_id": "20261127T064122.311200Z",
+    "routing": {
+      "distinct_sessions_served": {
+        "http://localhost:8123": 46,
+        "http://localhost:8124": 48
+      },
+      "consecutive_turn_replica_changes": {
+        "numerator": 143,
+        "denominator": 336,
+        "share": 0.4255952380952381
+      }
+    },
+    "router_mode": "rr",
+    "replicas": [
+      "http://localhost:8123",
+      "http://localhost:8124"
+    ],
+    "model": "Qwen/Qwen3-32B",
+    "replica_gpus": {
+      "http://localhost:8123": 2,
+      "http://localhost:8124": 3
+    },
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "vllm_version": "0.21.0",
+    "seed": 0,
+    "calibration": {
+      "system": {
+        "words": 1998,
+        "sample_tokens": 2048,
+        "target_tokens": 2048
+      },
+      "task": {
+        "words": 1006,
+        "sample_tokens": 1024,
+        "target_tokens": 1024
+      },
+      "tool": {
+        "words": 2021,
+        "sample_tokens": 2048,
+        "target_tokens": 2048
+      }
+    },
+    "attempted": 384,
+    "errors": 0,
+    "status": "complete",
+    "stop_reasons": [],
+    "elapsed_seconds": 331.47536991909146
+  },
+  "path": "results/C1/full-S48-T8-20261127T065319.773208Z/run.json",
+  "first_p50": 2.1133590121753514,
+  "first_p95": 2.9435477800201624,
+  "later_p50": 1.6332042147405446,
+  "later_p95": 56.011543662287295,
+  "e2e_p95": 97.04349928470324,
+  "valid": true,
+  "counter_increases": {
+    "vllm:num_preemptions_total": 3,
+    "vllm:prefix_cache_hits_total": 4517216,
+    "vllm:prefix_cache_queries_total": 26816029
+  },
+  "preemptions": 3,
+  "request_hit_pct": 41.40544641522881,
+  "prefix_hit_pct": 16.845208513162035,
+  "prefix_hit_rate": 0.16845208513162035,
+  "peak_kv": 0.9996813866054929,
+  "peak_waiting": 20.0,
+  "peak_running": {
+    "http://localhost:8123": 32.0,
+    "http://localhost:8124": 34.0
+  },
+  "context_max": 19912,
+  "context_min": 19539,
+  "by_turn": {
+    "1": {
+      "http://localhost:8124": 24,
+      "http://localhost:8123": 24
+    },
+    "2": {
+      "http://localhost:8123": 24,
+      "http://localhost:8124": 24
+    },
+    "3": {
+      "http://localhost:8124": 24,
+      "http://localhost:8123": 24
+    },
+    "4": {
+      "http://localhost:8124": 24,
+      "http://localhost:8123": 24
+    },
+    "5": {
+      "http://localhost:8123": 22,
+      "http://localhost:8124": 26
+    },
+    "6": {
+      "http://localhost:8123": 28,
+      "http://localhost:8124": 20
+    },
+    "7": {
+      "http://localhost:8123": 21,
+      "http://localhost:8124": 27
+    },
+    "8": {
+      "http://localhost:8123": 25,
+      "http://localhost:8124": 23
+    }
+  },
+  "turns_path": "results/C1/full-S48-T8-20261127T065319.773208Z/turns.jsonl",
+  "metrics_path": "results/C1/full-S48-T8-20261127T065319.773208Z/metrics.jsonl"
+}
