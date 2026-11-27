@@ -1,0 +1,21 @@
+{
+  "config": "C3",
+  "vllm_version": "0.21.0",
+  "run_id": "20261127T075942.985715Z",
+  "prelaunch": "results/C3/prelaunch-20261127T075942.985715Z.json",
+  "results": {},
+  "ready": [
+    "results/C3/gpu2-20261127T075942.985715Z-ready.json",
+    "results/C3/gpu3-20261127T075942.985715Z-ready.json"
+  ],
+  "cache_config": [
+    "results/C3/gpu2-20261127T075942.985715Z-cache-config.txt",
+    "results/C3/gpu3-20261127T075942.985715Z-cache-config.txt"
+  ],
+  "function_checks": "results/C3/function-checks-20261127T080500.170573Z/function-checks.json",
+  "onset_s": null,
+  "cleanup": "results/C3/released-20261127T080510.424111Z.json",
+  "status": "incomplete",
+  "block_size": 16,
+  "reason": "RuntimeError: Function checks 4/5 passed"
+}
