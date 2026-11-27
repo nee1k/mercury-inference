@@ -1,0 +1,20 @@
+{
+  "config": "C2",
+  "run_id": "20261127T072909.617020Z",
+  "results": {
+    "8": "results/C2/full-S8-T8-20261127T073438.512592Z/result.json",
+    "16": "results/C2/full-S16-T8-20261127T073545.011676Z/result.json",
+    "24": "results/C2/full-S24-T8-20261127T073708.471166Z/result.json",
+    "32": "results/C2/full-S32-T8-20261127T073849.913134Z/result.json",
+    "48": "results/C2/full-S48-T8-20261127T074110.977028Z/result.json"
+  },
+  "ready": [
+    "results/C2/gpu2-20261127T072909.617020Z-ready.json",
+    "results/C2/gpu3-20261127T072909.617020Z-ready.json"
+  ],
+  "function_checks": null,
+  "onset_s": 48,
+  "cleanup": "results/C2/released-20261127T074614.571921Z.json",
+  "status": "complete",
+  "vllm_version": "0.21.0"
+}

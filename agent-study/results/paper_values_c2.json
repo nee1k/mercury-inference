@@ -1,0 +1,104 @@
+{
+  "c2_weights_GiB": {
+    "value": "61.03",
+    "display": "61.03",
+    "source": "results/C2/gpu2-20261127T072909.617020Z-ready.json",
+    "what": "Model memory at load in GiB"
+  },
+  "c2_kv_tokens": {
+    "value": "251104",
+    "display": "251,104",
+    "source": "results/C2/gpu2-20261127T072909.617020Z-ready.json",
+    "what": "GPU KV cache tokens per replica"
+  },
+  "c2_conc32k": {
+    "value": "7.66",
+    "display": "7.66",
+    "source": "results/C2/gpu2-20261127T072909.617020Z-ready.json",
+    "what": "Estimated concurrency per replica at 32K"
+  },
+  "c2_onset_s": {
+    "value": "48",
+    "display": "48",
+    "source": "results/C2/full-S48-T8-20261127T074110.977028Z/result.json",
+    "what": "Smallest tested S with preemption"
+  },
+  "c2_s8_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C2/full-S8-T8-20261127T073438.512592Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c2_s8_request_hit_pct": {
+    "value": "79.98963436318876",
+    "display": "80.0",
+    "source": "results/C2/full-S8-T8-20261127T073438.512592Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c2_s16_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C2/full-S16-T8-20261127T073545.011676Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c2_s16_request_hit_pct": {
+    "value": "80.55764405850746",
+    "display": "80.6",
+    "source": "results/C2/full-S16-T8-20261127T073545.011676Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c2_s24_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C2/full-S24-T8-20261127T073708.471166Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c2_s24_request_hit_pct": {
+    "value": "80.56828196873712",
+    "display": "80.6",
+    "source": "results/C2/full-S24-T8-20261127T073708.471166Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c2_s24_hit_pct": {
+    "value": "80.56828196873712",
+    "display": "80.6",
+    "source": "results/C2/full-S24-T8-20261127T073708.471166Z/result.json",
+    "what": "Prefix hit rate as a percentage across both GPUs"
+  },
+  "c2_s24_ttft_later_s": {
+    "value": "2.954918887885288",
+    "display": "2.955",
+    "source": "results/C2/full-S24-T8-20261127T073708.471166Z/result.json",
+    "what": "Turns 2\u20138 p95 TTFT in seconds"
+  },
+  "c2_s32_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C2/full-S32-T8-20261127T073849.913134Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c2_s32_request_hit_pct": {
+    "value": "71.31780380281826",
+    "display": "71.3",
+    "source": "results/C2/full-S32-T8-20261127T073849.913134Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c2_s32_ttft_later_s": {
+    "value": "9.02318792343139",
+    "display": "9.023",
+    "source": "results/C2/full-S32-T8-20261127T073849.913134Z/result.json",
+    "what": "Turns 2\u20138 p95 TTFT in seconds"
+  },
+  "c2_s48_preemptions": {
+    "value": "4",
+    "display": "4",
+    "source": "results/C2/full-S48-T8-20261127T074110.977028Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c2_s48_request_hit_pct": {
+    "value": "38.36985569705667",
+    "display": "38.4",
+    "source": "results/C2/full-S48-T8-20261127T074110.977028Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  }
+}
