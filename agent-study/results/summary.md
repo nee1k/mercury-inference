@@ -40,3 +40,11 @@ The baseline is the sweep referenced by `paper_values.json`. Later-turn p95 TTFT
 | 24 | 36.35 | 61.75 | 50.85 | 4.637 → 3.382 | 3 → 1 | 0 → 0 | [Baseline](C1/full-S24-T8-20261126T203237.179455Z/result.json) · [Rerun](C1/full-S24-T8-20261127T064729.483884Z/result.json) |
 | 32 | 23.01 | 47.39 | 20.89 | 17.541 → 18.095 | 7 → 8 | 0 → 0 | [Baseline](C1/full-S32-T8-20261126T203504.619335Z/result.json) · [Rerun](C1/full-S32-T8-20261127T064948.564899Z/result.json) |
 | 48 | 16.62 | 41.41 | 16.85 | 53.140 → 56.012 | 19 → 20 | 4 → 3 | [Baseline](C1/full-S48-T8-20261126T203839.705224Z/result.json) · [Rerun](C1/full-S48-T8-20261127T065319.773208Z/result.json) |
+
+## C2 sticky-routing sweep
+
+C2 used two Qwen3-32B replicas with BF16 KV cache on GPUs 2 and 3. It retained the C1 rerun’s model snapshot, vLLM 0.21.0, seed 0, idle-GPU checks, prompt-token reporting, and metrics scrape. The router sent each new session to the replica with fewer assigned sessions and kept all eight turns there. At 8, 16, 24, 32, and 48 concurrent sessions, the replicas split sessions evenly. All 1,024 turns completed without errors. [Sweep](C2/sweep-20261127T072909.617020Z.json) · [Routing and turn records at S=48](C2/full-S48-T8-20261127T074110.977028Z/turns.jsonl)
+
+Queueing first appeared at S=16. Preemption first appeared at S=48, with four preemptions. At S=48, p95 time to first token for turns 2–8 was 35.661 s, compared with 56.012 s in the round-robin C1 rerun. At that load, request usage reported 38.37% of prompt tokens cached, and the replica prefix-cache counters gave a 19.01% hit rate. [C2 at S=16](C2/full-S16-T8-20261127T073545.011676Z/result.json) · [C2 at S=48](C2/full-S48-T8-20261127T074110.977028Z/result.json) · [C1 rerun at S=48](C1/full-S48-T8-20261127T065319.773208Z/result.json)
+
+The published files include both replica readiness records and startup logs, per-load run metadata, results, turn records, and metrics. Each C2 paper value cites its source file. Both GPUs returned to their prelaunch memory levels after shutdown. [C2 paper values](paper_values_c2.json) · [Cleanup record](C2/released-20261127T074614.571921Z.json)
