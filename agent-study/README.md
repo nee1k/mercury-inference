@@ -5,8 +5,8 @@ This study replays multi-turn agent sessions against two independent Qwen3-32B B
 | Config | Routing | KV storage | Full replay | First preemption |
 |---|---|---|---|---|
 | C1 | Round robin | Default BF16 | Complete | [48 sessions](results/C1/sweep-20261126T202631.742740Z.json) |
-| C2 | Balanced session affinity | Default BF16 | Pending. Dry run passed. | Pending |
-| C3 | Balanced session affinity | FP8 | Pending | Pending |
+| C2 | Balanced session affinity | Default BF16 | Complete | [48 sessions](results/C2/sweep-20261127T072909.617020Z.json) |
+| C3 | Balanced session affinity | FP8 | Complete | [None through 48 sessions](results/C3/sweep-20261128T181103.552840Z.json) |
 | C4 | Balanced session affinity | Default BF16 plus native host offload | Pending | Pending |
 
 [Measured results and preemption thresholds](results/summary.md) · [Study decisions](STORY.md) · [GPU and runtime preflight](results/preflight/occupancy.json)

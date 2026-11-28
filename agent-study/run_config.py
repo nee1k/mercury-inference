@@ -15,7 +15,7 @@ from replay import FULL_SESSIONS, replay
 from serve import FLAGS, verify_flags
 from shutdown import release
 from study import (
-    CONFIGS, MODEL, PORTS, RESULTS, ROOT, VERSION, available_port, base_url, gpu_snapshot,
+    BF16_CHECKS, CONFIGS, MODEL, PORTS, RESULTS, ROOT, VERSION, available_port, base_url, gpu_snapshot,
     launch, managed, neighbors, request, same_process, sample_idle, save, stamp,
 )
 from summarize import (current_sweeps, make_summary, relative, sweep_onset, write_paper_values,
@@ -47,6 +47,19 @@ def run_function_checks(config, record):
     evidence = json.loads(result_path.read_text())
     print(f"Function checks {evidence['status']}: {result_path}", flush=True)
     return result_path
+
+
+def record_fp8_cache_config(endpoint, path):
+    with request(endpoint, "/metrics") as response:
+        samples = [line for line in response.read().decode().splitlines()
+                   if line.startswith("vllm:cache_config_info{")]
+    path.write_text("\n".join(samples) + "\n")
+    required = {'cache_dtype="fp8"', 'calculate_kv_scales="False"', 'block_size="16"'}
+    if len(samples) == 1:
+        labels = samples[0].partition("{")[2].partition("}")[0].split(",")
+        if required.issubset(labels):
+            return
+    raise RuntimeError(f"Unexpected FP8 KV configuration at {endpoint}, see {path.name}")
 
 
 def start_router(config, run_id, router_port, replicas):
@@ -88,11 +101,11 @@ def controllers(config, run_id, gpus, ports):
         raise RuntimeError("Replica startup failed; see launcher logs")
 
 
-def select_gpus(preferred, folder, run_id):
+def select_gpus(preferred, folder, run_id, *, exact=False):
     checks = {}
     with ThreadPoolExecutor(max_workers=2) as pool:
         checks.update(zip(preferred, pool.map(sample_idle, preferred)))
-        if not all(check["idle"] for check in checks.values()):
+        if not exact and not all(check["idle"] for check in checks.values()):
             remaining = [gpu for gpu in range(4) if gpu not in preferred]
             checks.update(zip(remaining, pool.map(sample_idle, remaining)))
     idle = [gpu for gpu, check in checks.items() if check["idle"]]
@@ -123,6 +136,12 @@ def select_ports(ports):
 
 
 def run_config(config, phase, gpus, ports):
+    if phase == "checks-only":
+        if config != "C2":
+            raise ValueError("checks-only requires C2")
+        config = BF16_CHECKS
+    elif config == BF16_CHECKS:
+        raise ValueError("Use C2 checks-only for the BF16 control")
     dry_shapes = {"C1": (2, 2), "C2": (4, 2)}
     if phase == "dry-run" and config not in dry_shapes:
         raise ValueError("No dry-run shape for this configuration")
@@ -143,7 +162,7 @@ def run_config(config, phase, gpus, ports):
             sweep.update(status="skipped", reason=str(exc))
             print(str(exc), flush=True)
             return False
-        gpus = select_gpus(gpus, folder, run_id)
+        gpus = select_gpus(gpus, folder, run_id, exact=config in (BF16_CHECKS, "C3"))
         ports = select_ports(ports)
         replicas = tuple(base_url(port) for port in ports[:2])
         print(f"Starting {config} {phase} on GPUs {gpus}, replicas {replicas}", flush=True)
@@ -154,10 +173,23 @@ def run_config(config, phase, gpus, ports):
         controllers(config, run_id, gpus, ports[:2])
         sweep["ready"] = [relative(folder / f"gpu{gpu}-{run_id}-ready.json") for gpu in gpus]
         router = start_router(config, run_id, ports[2], replicas)
-        if config in ("C3", "C4"):
+        if config == "C3":
+            sweep["cache_config"] = []
+            for gpu, endpoint in zip(gpus, replicas):
+                path = folder / f"gpu{gpu}-{run_id}-cache-config.txt"
+                sweep["cache_config"].append(relative(path))
+                record_fp8_cache_config(endpoint, path)
+        if config in (BF16_CHECKS, "C3", "C4"):
             record = managed(f"gpu{gpus[0]}")
             sweep["function_checks"] = relative(run_function_checks(config, record))
+            checks = json.loads((ROOT / sweep["function_checks"]).read_text())
+            expected = ["model_list", "chat", "streaming", "tool_call", "json_schema"]
+            if (checks["status"] != "PASS" or [c["name"] for c in checks["checks"]] != expected
+                    or any(c["status"] != "PASS" for c in checks["checks"])):
+                raise RuntimeError(f"Function checks failed: {sweep['function_checks']}")
         shapes = [dry_shapes[config]] if phase == "dry-run" else [(size, 8) for size in FULL_SESSIONS]
+        if phase == "checks-only":
+            shapes = []
         for sessions, turns in shapes:
             run_folder, result = replay(config, router, replicas, sessions, turns, phase)
             path, rows[sessions] = write_run_result(run_folder / "run.json")
@@ -166,12 +198,14 @@ def run_config(config, phase, gpus, ports):
                 raise RuntimeError("Replay did not complete; remaining shapes are paused")
         if phase == "full":
             sweep["onset_s"] = sweep_onset(rows)
+            if config == "C3" and sweep["onset_s"] is not None:
+                sweep["queueing_onset_s"] = min((s for s, row in rows.items() if row["peak_waiting"] > 0), default="none")
             if config == "C1" and all(row["valid"] for row in rows.values()):
                 c1_probe.record(["c1_probe.py", "live", str(gpus[0])], study_python=True)
         if all(row["valid"] for row in rows.values()):
             sweep["status"] = "complete"
     except Exception as exc:
-        sweep["reason"] = type(exc).__name__
+        sweep["reason"] = f"{type(exc).__name__}: {exc}"
         raise
     finally:
         try:
@@ -182,6 +216,8 @@ def run_config(config, phase, gpus, ports):
                     sweep["status"] = "cleanup incomplete"
         finally:
             prefix = "sweep" if phase == "full" else "dry-checkpoint"
+            if phase == "checks-only":
+                prefix = "checks-only"
             path = folder / f"{prefix}-{run_id}.json"
             save(path, sweep)
             print(f"Checkpoint evidence: {path}", flush=True)
@@ -190,27 +226,31 @@ def run_config(config, phase, gpus, ports):
                     write_paper_values({"C1": (path, sweep)},
                                        RESULTS / "paper_values_c1_rerun.json",
                                        include_request_hits=True)
-            else:
+            elif config == "C3" and sweep["status"] == "complete":
+                write_paper_values({"C3": (path, sweep)}, RESULTS / "paper_values_c3.json", include_request_hits=True)
+            elif config not in (BF16_CHECKS, "C3"):
                 write_paper_values(current_sweeps())
             if config == "C1" and phase == "full" and sweep["status"] == "complete":
                 for gpu in gpus:
                     c1_probe.record(["c1_probe.py", "copies", str(gpu)], study_python=True)
-            summary = make_summary()
-            print(f"Summary contains {len(summary)} runs", flush=True)
+            if config not in (BF16_CHECKS, "C3"):
+                summary = make_summary()
+                print(f"Summary contains {len(summary)} runs", flush=True)
     return sweep["status"] == "complete"
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("config", choices=CONFIGS)
-    parser.add_argument("phase", choices=("dry-run", "full"))
+    parser.add_argument("config", choices=[name for name in CONFIGS if name != BF16_CHECKS])
+    parser.add_argument("phase", choices=("dry-run", "full", "checks-only"))
     parser.add_argument("--gpus", nargs=2, type=int, choices=range(4), default=(2, 3))
     parser.add_argument("--ports", nargs=3, type=int)
     args = parser.parse_args()
     try:
         ok = run_config(args.config, args.phase, args.gpus, args.ports)
     except Exception as exc:
-        save(RESULTS / args.config / f"failure-{stamp()}.json",
+        folder = BF16_CHECKS if args.config == "C2" and args.phase == "checks-only" else args.config
+        save(RESULTS / folder / f"failure-{stamp()}.json",
              {"error": type(exc).__name__, "vllm_version": VERSION})
         raise
     raise SystemExit(not ok)

@@ -1,0 +1,72 @@
+{
+  "pid": 3944796,
+  "ppid": 3943998,
+  "start_ticks": 569397020,
+  "uid": 16448,
+  "state": "R",
+  "boot_id": "826351a2-b064-47e5-b0ff-336ab44b5862",
+  "config": "C3",
+  "gpu": 2,
+  "port": 8120,
+  "run_id": "20261128T181103.552840Z",
+  "base_url": "http://localhost:8120",
+  "gpu_uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+  "idle_used_mib": 5.0,
+  "model": "Qwen/Qwen3-32B",
+  "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+  "vllm_version": "0.21.0",
+  "name": "gpu2",
+  "log": "results/C3/gpu2-20261128T181103.552840Z.log",
+  "started_at": "20261128T181127.183517Z",
+  "load_lines": [
+    "Model loading took 61.03 GiB memory and 9.972302 seconds"
+  ],
+  "kv_cache_line": "GPU KV cache size: 502,224 tokens",
+  "model_loading_line": "Model loading took 61.03 GiB memory and 9.972302 seconds",
+  "model_loading_gib": 61.03,
+  "max_concurrency_line": "Maximum concurrency for 32,768 tokens per request: 15.33x",
+  "kv_cache_tokens": 502224,
+  "max_concurrency": 15.33,
+  "ready_at": "20261128T181519.082650Z",
+  "seconds_to_first_completion": 233.25419595465064,
+  "completion_usage": {
+    "prompt_tokens": 23,
+    "total_tokens": 26,
+    "completion_tokens": 3,
+    "prompt_tokens_details": null
+  },
+  "cache_files": {
+    "config.json": 728,
+    "generation_config.json": 239,
+    "model-00001-of-00017.safetensors": 3957109648,
+    "model-00002-of-00017.safetensors": 3900791760,
+    "model-00003-of-00017.safetensors": 3900791760,
+    "model-00004-of-00017.safetensors": 3900791800,
+    "model-00005-of-00017.safetensors": 3900791800,
+    "model-00006-of-00017.safetensors": 3900791800,
+    "model-00007-of-00017.safetensors": 3900791800,
+    "model-00008-of-00017.safetensors": 3900791800,
+    "model-00009-of-00017.safetensors": 3900791800,
+    "model-00010-of-00017.safetensors": 3900791800,
+    "model-00011-of-00017.safetensors": 3900791800,
+    "model-00012-of-00017.safetensors": 3900791800,
+    "model-00013-of-00017.safetensors": 3900791800,
+    "model-00014-of-00017.safetensors": 3900791800,
+    "model-00015-of-00017.safetensors": 3900791800,
+    "model-00016-of-00017.safetensors": 3900791800,
+    "model-00017-of-00017.safetensors": 3055341992,
+    "model.safetensors.index.json": 58330,
+    "tokenizer.json": 11422654,
+    "tokenizer_config.json": 9732
+  },
+  "gpu_at_ready": {
+    "timestamp": "20261128T181519.611241Z",
+    "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+    "index": 2,
+    "used_mib": 129937.0,
+    "gpu_util_percent": 0.0,
+    "pids": [
+      3957966
+    ]
+  }
+}

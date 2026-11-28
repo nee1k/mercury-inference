@@ -1,0 +1,116 @@
+{
+  "c3_weights_GiB": {
+    "value": "61.03",
+    "display": "61.03",
+    "source": "results/C3/gpu2-20261128T181103.552840Z-ready.json",
+    "what": "Model memory at load in GiB"
+  },
+  "c3_kv_tokens": {
+    "value": "502224",
+    "display": "502,224",
+    "source": "results/C3/gpu2-20261128T181103.552840Z-ready.json",
+    "what": "GPU KV cache tokens per replica"
+  },
+  "c3_conc32k": {
+    "value": "15.33",
+    "display": "15.33",
+    "source": "results/C3/gpu2-20261128T181103.552840Z-ready.json",
+    "what": "Estimated concurrency per replica at 32K"
+  },
+  "c3_queueing_onset_s": {
+    "value": "24",
+    "display": "24",
+    "source": "results/C3/sweep-20261128T181103.552840Z.json",
+    "what": "Smallest tested S with sampled waiting requests"
+  },
+  "c3_onset_s": {
+    "value": "none",
+    "display": "none",
+    "source": "results/C3/sweep-20261128T181103.552840Z.json",
+    "what": "Smallest tested S with preemption"
+  },
+  "c3_s8_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C3/full-S8-T8-20261128T181523.700438Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c3_s8_request_hit_pct": {
+    "value": "79.9968009222169",
+    "display": "80.0",
+    "source": "results/C3/full-S8-T8-20261128T181523.700438Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c3_s16_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C3/full-S16-T8-20261128T181629.941582Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c3_s16_request_hit_pct": {
+    "value": "80.56614435245895",
+    "display": "80.6",
+    "source": "results/C3/full-S16-T8-20261128T181629.941582Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c3_s24_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C3/full-S24-T8-20261128T181753.923903Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c3_s24_request_hit_pct": {
+    "value": "80.57024992594037",
+    "display": "80.6",
+    "source": "results/C3/full-S24-T8-20261128T181753.923903Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c3_s24_hit_pct": {
+    "value": "80.57024992594037",
+    "display": "80.6",
+    "source": "results/C3/full-S24-T8-20261128T181753.923903Z/result.json",
+    "what": "Prefix hit rate as a percentage across both GPUs"
+  },
+  "c3_s24_ttft_later_s": {
+    "value": "2.914618015754968",
+    "display": "2.915",
+    "source": "results/C3/full-S24-T8-20261128T181753.923903Z/result.json",
+    "what": "Turns 2\u20138 p95 TTFT in seconds"
+  },
+  "c3_s32_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C3/full-S32-T8-20261128T181935.757809Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c3_s32_request_hit_pct": {
+    "value": "80.5632784209194",
+    "display": "80.6",
+    "source": "results/C3/full-S32-T8-20261128T181935.757809Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c3_s32_ttft_later_s": {
+    "value": "4.015019416483119",
+    "display": "4.015",
+    "source": "results/C3/full-S32-T8-20261128T181935.757809Z/result.json",
+    "what": "Turns 2\u20138 p95 TTFT in seconds"
+  },
+  "c3_s48_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C3/full-S48-T8-20261128T182127.441117Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c3_s48_request_hit_pct": {
+    "value": "80.56915569280903",
+    "display": "80.6",
+    "source": "results/C3/full-S48-T8-20261128T182127.441117Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c3_function_checks": {
+    "value": "PASS",
+    "display": "PASS",
+    "source": "results/C3/function-checks-20261128T181520.982431Z/function-checks.json",
+    "what": "Protocol check outcome"
+  }
+}

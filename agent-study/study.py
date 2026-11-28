@@ -31,11 +31,14 @@ VERSION = "0.21.0"
 HELP = PREVIOUS / "results/inventory/vllm-serve-help-all.txt"
 MAX_CONTEXT = 32768
 PORTS = range(8120, 8130)
+TOOL_FLAGS = ("--enable-auto-tool-choice", "--tool-call-parser", "hermes")
+BF16_CHECKS = "C2-bf16-checks"
 CONFIGS = {
     "C1": ("rr", ()),
     "C2": ("sticky", ()),
-    "C3": ("sticky", ("--kv-cache-dtype", "fp8")),
-    "C4": ("sticky", ("--kv-offloading-size", "100", "--kv-offloading-backend", "native")),
+    BF16_CHECKS: ("sticky", TOOL_FLAGS),
+    "C3": ("sticky", ("--kv-cache-dtype", "fp8", *TOOL_FLAGS)),
+    "C4": ("sticky", ("--kv-offloading-size", "100", "--kv-offloading-backend", "native", *TOOL_FLAGS)),
 }
 REQUEST_SETTINGS = {
     "model": MODEL,

@@ -26,7 +26,7 @@ Latency uses successful turns and is in seconds. Context is the final-turn range
 
 - C1 — first observed at [S=48](C1/sweep-20261126T202631.742740Z.json).
 - C2 — first observed at [S=48](C2/sweep-20261127T072909.617020Z.json).
-- C3 — full sweep pending.
+- C3 — [None through 48 sessions](C3/sweep-20261128T181103.552840Z.json).
 - C4 — full sweep pending.
 
 ## C1 cache measurement rerun
@@ -48,3 +48,19 @@ C2 used two Qwen3-32B replicas with BF16 KV cache on GPUs 2 and 3. It retained t
 Queueing first appeared at S=16. Preemption first appeared at S=48, with four preemptions. At S=48, p95 time to first token for turns 2–8 was 35.661 s, compared with 56.012 s in the round-robin C1 rerun. At that load, request usage reported 38.37% of prompt tokens cached, and the replica prefix-cache counters gave a 19.01% hit rate. [C2 at S=16](C2/full-S16-T8-20261127T073545.011676Z/result.json) · [C2 at S=48](C2/full-S48-T8-20261127T074110.977028Z/result.json) · [C1 rerun at S=48](C1/full-S48-T8-20261127T065319.773208Z/result.json)
 
 The published files include both replica readiness records and startup logs, per-load run metadata, results, turn records, and metrics. Each C2 paper value cites its source file. Both GPUs returned to their prelaunch memory levels after shutdown. [C2 paper values](paper_values_c2.json) · [Cleanup record](C2/released-20261127T074614.571921Z.json)
+
+## C3 FP8 KV sweep
+
+Each replica provided 502,224 KV tokens (1,004,448 across GPUs 2 and 3). Both reported FP8 KV, `calculate_kv_scales=False`, and a 16-token block size. [GPU 2 readiness](C3/gpu2-20261128T181103.552840Z-ready.json) · [GPU 3 readiness](C3/gpu3-20261128T181103.552840Z-ready.json) · [GPU 2 cache config](C3/gpu2-20261128T181103.552840Z-cache-config.txt) · [GPU 3 cache config](C3/gpu3-20261128T181103.552840Z-cache-config.txt)
+
+BF16 and FP8 each passed all five checks with the Hermes parser enabled, covering model list, chat, streaming with usage, automatic tool calling, and JSON schema. [BF16 checks](C2-bf16-checks/function-checks-20261128T180821.053331Z/function-checks.json) · [FP8 checks](C3/function-checks-20261128T181520.982431Z/function-checks.json)
+
+All 1,024 turns completed. Each load split sessions evenly between the replicas, and every session stayed on its assigned replica. Queueing first appeared at 24 sessions. The sweep recorded no preemption through 48 sessions. [Sweep](C3/sweep-20261128T181103.552840Z.json) · [GPU release](C3/released-20261128T182410.071376Z.json)
+
+| Sessions | Preemptions | Cached prompt tokens from request usage | Turns 2–8 p95 TTFT (s) | Evidence |
+|---:|---:|---:|---:|---|
+| 8 | 0 | 80.00% | 0.901 | [Result](C3/full-S8-T8-20261128T181523.700438Z/result.json) |
+| 16 | 0 | 80.57% | 1.705 | [Result](C3/full-S16-T8-20261128T181629.941582Z/result.json) |
+| 24 | 0 | 80.57% | 2.915 | [Result](C3/full-S24-T8-20261128T181753.923903Z/result.json) |
+| 32 | 0 | 80.56% | 4.015 | [Result](C3/full-S32-T8-20261128T181935.757809Z/result.json) |
+| 48 | 0 | 80.57% | 4.399 | [Result](C3/full-S48-T8-20261128T182127.441117Z/result.json) |

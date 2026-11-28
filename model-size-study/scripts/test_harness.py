@@ -8,6 +8,9 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+from urllib.error import HTTPError, URLError
+
+import function_checks
 from benchmark import validate_result
 from common import ROOT, check_neighbors, gpu_snapshot, idle_sample, same_process, save, terminate_child
 from gate import compare, read_chat
@@ -26,6 +29,30 @@ def fixture_raw(count=10, input_len=1024, output_len=300):
 
 
 class HarnessTests(unittest.TestCase):
+    def test_failed_function_checks_retain_response_evidence(self):
+        def success(raw):
+            response = io.BytesIO(raw)
+            response.status = 200
+            return response
+
+        base = "http://localhost:8120"
+        raw_stream = b"data: invalid JSON\n\ndata: [DONE]\n\n"
+        responses = [success(b'{"data":[]}'), success(b'{}'), success(raw_stream),
+                     HTTPError(base, 400, "Bad Request", {}, io.BytesIO(b"tool error")),
+                     URLError("disconnected")]
+        state = {"config": "test", "vllm_version": "0.21.0"}
+        with (tempfile.TemporaryDirectory() as directory,
+              patch("function_checks.owned_server", return_value=state),
+              patch("function_checks.gpu_snapshot", return_value={}),
+              patch("function_checks.check_neighbors", return_value=[]),
+              patch("urllib.request.build_opener") as opener):
+            opener.return_value.open.side_effect = responses
+            report = json.loads(function_checks.run(base, directory).read_text())
+        self.assertEqual(report["status"], "FAIL")
+        self.assertEqual([(c["http_status"], c["response_body"]) for c in report["checks"]],
+                         [(200, '{"data":[]}'), (200, '{}'), (200, raw_stream.decode()),
+                          (400, "tool error"), (None, None)])
+
     def test_idle_rule_rejects_memory_utilization_or_process_at_any_sample(self):
         good = {"uuid": "test-gpu", "used_mib": 0, "gpu_util_percent": 0, "pids": []}
         cases = [None, {"used_mib": 1024}, {"gpu_util_percent": 1}, {"pids": [123]}]

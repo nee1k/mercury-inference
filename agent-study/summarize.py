@@ -6,7 +6,7 @@ import json
 import os
 
 from replay import COUNTERS, FULL_SESSIONS, KV_USAGE, METRICS, RUNNING, WAITING
-from study import CONFIGS, RESULTS, ROOT, save
+from study import BF16_CHECKS, CONFIGS, RESULTS, ROOT, save
 
 
 def read_jsonl(path):
@@ -130,11 +130,13 @@ def write_paper_values(sweeps, output=RESULTS / "paper_values.json", *, include_
 
     for config, (path, sweep) in sweeps.items():
         key = config.lower()
-        if config == "C1" and sweep["ready"]:
+        if config in ("C1", "C3") and sweep["ready"]:
             ready = ROOT / sweep["ready"][0]
-            add("c1_weights_GiB", ready, "model_loading_gib", "Model memory at load in GiB")
-            add("c1_kv_tokens", ready, "kv_cache_tokens", "GPU KV cache tokens per replica", ",d")
-            add("c1_conc32k", ready, "max_concurrency", "Estimated concurrency per replica at 32K")
+            add(f"{key}_weights_GiB", ready, "model_loading_gib", "Model memory at load in GiB")
+            add(f"{key}_kv_tokens", ready, "kv_cache_tokens", "GPU KV cache tokens per replica", ",d")
+            add(f"{key}_conc32k", ready, "max_concurrency", "Estimated concurrency per replica at 32K")
+        if config == "C3" and sweep.get("queueing_onset_s") is not None:
+            add("c3_queueing_onset_s", path, "queueing_onset_s", "Smallest tested S with sampled waiting requests")
         if sweep["onset_s"] is not None:
             add(f"{key}_onset_s", path, "onset_s", "Smallest tested S with preemption")
         for size, source in sweep["results"].items():
@@ -219,6 +221,8 @@ def make_summary(output=RESULTS / "summary.md"):
                     f"{result_link}[turns]({turns_link}) · [metrics]({metrics_link}) |")
     rows.extend(["", "## First observed preemption", ""])
     for config in CONFIGS:
+        if config == BF16_CHECKS:
+            continue
         text = "full sweep pending."
         if config in sweeps:
             path, sweep = sweeps[config]

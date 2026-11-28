@@ -68,13 +68,17 @@ def local_url(base):
     return urllib.parse.urlunsplit((parsed.scheme, parsed.netloc, "", "", ""))
 
 
-def http(base, endpoint, body=None, timeout=120):
+def http(base, endpoint, body=None, timeout=120, *, evidence=None):
     request = urllib.request.Request(local_url(base) + endpoint,
         data=json.dumps(body).encode() if body is not None else None,
         headers={"Content-Type": "application/json"})
     opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
     with opener.open(request, timeout=timeout) as response:
-        return json.load(response)
+        if evidence is None:
+            return json.load(response)
+        evidence["http_status"] = response.status
+        evidence["response_body"] = response.read().decode("utf-8", errors="replace")
+        return json.loads(evidence["response_body"])
 
 
 def identity(pid):

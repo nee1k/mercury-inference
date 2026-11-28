@@ -1,0 +1,128 @@
+{
+  "run": {
+    "config": "C3",
+    "phase": "full",
+    "sessions": 8,
+    "turns": 8,
+    "run_id": "20261128T181103.552840Z",
+    "routing": {
+      "distinct_sessions_served": {
+        "http://localhost:8120": 4,
+        "http://localhost:8121": 4
+      },
+      "final_sticky_assignments": {
+        "http://localhost:8120": [
+          "s08-01",
+          "s08-03",
+          "s08-04",
+          "s08-05"
+        ],
+        "http://localhost:8121": [
+          "s08-00",
+          "s08-02",
+          "s08-06",
+          "s08-07"
+        ]
+      },
+      "assigned_sessions": {
+        "http://localhost:8120": 4,
+        "http://localhost:8121": 4
+      }
+    },
+    "router_mode": "sticky",
+    "replicas": [
+      "http://localhost:8120",
+      "http://localhost:8121"
+    ],
+    "model": "Qwen/Qwen3-32B",
+    "replica_gpus": {
+      "http://localhost:8120": 2,
+      "http://localhost:8121": 3
+    },
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "vllm_version": "0.21.0",
+    "seed": 0,
+    "calibration": {
+      "system": {
+        "words": 1998,
+        "sample_tokens": 2048,
+        "target_tokens": 2048
+      },
+      "task": {
+        "words": 1006,
+        "sample_tokens": 1024,
+        "target_tokens": 1024
+      },
+      "tool": {
+        "words": 2021,
+        "sample_tokens": 2048,
+        "target_tokens": 2048
+      }
+    },
+    "attempted": 64,
+    "errors": 0,
+    "status": "complete",
+    "stop_reasons": [],
+    "elapsed_seconds": 65.75209125503898
+  },
+  "path": "results/C3/full-S8-T8-20261128T181523.700438Z/run.json",
+  "first_p50": 0.6410835557617247,
+  "first_p95": 0.8177234255708754,
+  "later_p50": 0.5055304961279035,
+  "later_p95": 0.9007342350669205,
+  "e2e_p95": 8.819709032354876,
+  "valid": true,
+  "counter_increases": {
+    "vllm:num_preemptions_total": 0,
+    "vllm:prefix_cache_hits_total": 580144,
+    "vllm:prefix_cache_queries_total": 725209
+  },
+  "preemptions": 0,
+  "request_hit_pct": 79.9968009222169,
+  "prefix_hit_pct": 79.9968009222169,
+  "prefix_hit_rate": 0.799968009222169,
+  "peak_kv": 0.14582005862112912,
+  "peak_waiting": 0.0,
+  "peak_running": {
+    "http://localhost:8120": 4.0,
+    "http://localhost:8121": 4.0
+  },
+  "context_max": 19911,
+  "context_min": 19822,
+  "by_turn": {
+    "1": {
+      "http://localhost:8121": 4,
+      "http://localhost:8120": 4
+    },
+    "2": {
+      "http://localhost:8121": 4,
+      "http://localhost:8120": 4
+    },
+    "3": {
+      "http://localhost:8121": 4,
+      "http://localhost:8120": 4
+    },
+    "4": {
+      "http://localhost:8120": 4,
+      "http://localhost:8121": 4
+    },
+    "5": {
+      "http://localhost:8120": 4,
+      "http://localhost:8121": 4
+    },
+    "6": {
+      "http://localhost:8120": 4,
+      "http://localhost:8121": 4
+    },
+    "7": {
+      "http://localhost:8120": 4,
+      "http://localhost:8121": 4
+    },
+    "8": {
+      "http://localhost:8120": 4,
+      "http://localhost:8121": 4
+    }
+  },
+  "turns_path": "results/C3/full-S8-T8-20261128T181523.700438Z/turns.jsonl",
+  "metrics_path": "results/C3/full-S8-T8-20261128T181523.700438Z/metrics.jsonl"
+}

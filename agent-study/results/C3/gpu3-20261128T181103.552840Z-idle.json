@@ -1,0 +1,93 @@
+{
+  "idle": true,
+  "samples": [
+    {
+      "timestamp": "20261128T181115.824405Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 1.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261128T181116.814787Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 4.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261128T181117.398260Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 0.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261128T181119.288067Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 2.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261128T181119.781384Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 4.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261128T181120.856476Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 1.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261128T181121.850326Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 4.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261128T181122.449181Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 0.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261128T181124.068731Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 4.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261128T181124.535090Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 4.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261128T181125.825870Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 1.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    }
+  ]
+}

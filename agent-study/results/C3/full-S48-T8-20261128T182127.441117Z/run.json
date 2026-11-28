@@ -1,0 +1,106 @@
+{
+  "config": "C3",
+  "phase": "full",
+  "sessions": 48,
+  "turns": 8,
+  "run_id": "20261128T181103.552840Z",
+  "routing": {
+    "distinct_sessions_served": {
+      "http://localhost:8120": 24,
+      "http://localhost:8121": 24
+    },
+    "final_sticky_assignments": {
+      "http://localhost:8120": [
+        "s48-00",
+        "s48-01",
+        "s48-03",
+        "s48-04",
+        "s48-06",
+        "s48-07",
+        "s48-08",
+        "s48-10",
+        "s48-11",
+        "s48-13",
+        "s48-14",
+        "s48-16",
+        "s48-19",
+        "s48-21",
+        "s48-22",
+        "s48-23",
+        "s48-25",
+        "s48-28",
+        "s48-29",
+        "s48-38",
+        "s48-40",
+        "s48-43",
+        "s48-46",
+        "s48-47"
+      ],
+      "http://localhost:8121": [
+        "s48-02",
+        "s48-05",
+        "s48-09",
+        "s48-12",
+        "s48-15",
+        "s48-17",
+        "s48-18",
+        "s48-20",
+        "s48-24",
+        "s48-26",
+        "s48-27",
+        "s48-30",
+        "s48-31",
+        "s48-32",
+        "s48-33",
+        "s48-34",
+        "s48-35",
+        "s48-36",
+        "s48-37",
+        "s48-39",
+        "s48-41",
+        "s48-42",
+        "s48-44",
+        "s48-45"
+      ]
+    },
+    "assigned_sessions": {
+      "http://localhost:8120": 24,
+      "http://localhost:8121": 24
+    }
+  },
+  "router_mode": "sticky",
+  "replicas": [
+    "http://localhost:8120",
+    "http://localhost:8121"
+  ],
+  "model": "Qwen/Qwen3-32B",
+  "replica_gpus": {
+    "http://localhost:8120": 2,
+    "http://localhost:8121": 3
+  },
+  "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+  "vllm_version": "0.21.0",
+  "seed": 0,
+  "calibration": {
+    "system": {
+      "words": 1998,
+      "sample_tokens": 2048,
+      "target_tokens": 2048
+    },
+    "task": {
+      "words": 1006,
+      "sample_tokens": 1024,
+      "target_tokens": 1024
+    },
+    "tool": {
+      "words": 2021,
+      "sample_tokens": 2048,
+      "target_tokens": 2048
+    }
+  },
+  "attempted": 384,
+  "errors": 0,
+  "status": "complete",
+  "stop_reasons": [],
+  "elapsed_seconds": 152.89107819087803
+}

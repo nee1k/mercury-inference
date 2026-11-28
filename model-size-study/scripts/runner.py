@@ -76,7 +76,7 @@ def analyze_chunks(chunks, mode):
             "usage": usage, "finish_reason": finish, "content": content, "tool_call_deltas": tools}
 
 
-def stream_request(base, body, mode, output_path):
+def stream_request(base, body, mode, output_path, *, evidence=None):
     base = local_url(base)
     request = urllib.request.Request(base + "/v1/chat/completions",
         data=json.dumps(body).encode(), headers={"Content-Type": "application/json"})
@@ -84,11 +84,25 @@ def stream_request(base, body, mode, output_path):
     chunks, begin, status = [], time.perf_counter(), {}
     with open(output_path, "w") as log:
         with opener.open(request, timeout=900) as response:
-            for event in sse_events(response, status):
-                elapsed = time.perf_counter() - begin
-                chunks.append((elapsed, event))
-                log.write(json.dumps({"elapsed_seconds": elapsed, "chunk": event}) + "\n")
-                log.flush()
+            def capture_lines():
+                for line in response:
+                    evidence["response_body"] += line.decode("utf-8", errors="replace")
+                    yield line
+
+            lines = response
+            if evidence is not None:
+                evidence.update(http_status=response.status, response_body="")
+                lines = capture_lines()
+            try:
+                for event in sse_events(lines, status):
+                    elapsed = time.perf_counter() - begin
+                    chunks.append((elapsed, event))
+                    log.write(json.dumps({"elapsed_seconds": elapsed, "chunk": event}) + "\n")
+                    log.flush()
+            finally:
+                if evidence is not None:
+                    # The parser can stop at [DONE] or reject a malformed event early.
+                    evidence["response_body"] += response.read().decode("utf-8", errors="replace")
     result = analyze_chunks(chunks, mode)
     result["end_to_end_seconds"] = time.perf_counter() - begin
     result["stream_done"] = status.get("done", False)

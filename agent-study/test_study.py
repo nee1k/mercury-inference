@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from urllib.error import URLError
 
 from replay import EXTERNAL_COUNTERS, FULL_SESSIONS, METRICS, cached_tokens, metric_values, routing_stats
@@ -24,6 +24,32 @@ class StudyTests(unittest.TestCase):
     def router(self, mode):
         with patch.object(ThreadingHTTPServer, "__init__", return_value=None):
             return Router(mode, 8122, REPLICAS)
+
+    def test_failed_fp8_checks_save_checkpoint_and_skip_sweep(self):
+        import run_config as controller
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp)
+            checks = folder / "function-checks.json"
+            checks.write_text(json.dumps({"status": "FAIL", "checks": [
+                {"name": "tool_call", "status": "FAIL", "http_status": 400,
+                 "response_body": "tool calling is disabled"}]}))
+            cleanup = Mock(return_value={"source": "released.json", "memory_released": True})
+            replay = Mock()
+            with patch.multiple(controller, RESULTS=folder, ROOT=folder, stamp=lambda: "test",
+                                relative=lambda p: str(p.relative_to(folder)),
+                                select_gpus=Mock(return_value=[2, 3]), controllers=Mock(),
+                                select_ports=Mock(return_value=[8120, 8121, 8122]),
+                                start_router=Mock(), managed=Mock(), record_fp8_cache_config=Mock(),
+                                run_function_checks=Mock(return_value=checks), replay=replay,
+                                release=cleanup):
+                with self.assertRaisesRegex(RuntimeError, "Function checks failed"):
+                    controller.run_config("C3", "full", [2, 3], None)
+            replay.assert_not_called()
+            cleanup.assert_called_once_with("C3", "test")
+            checkpoint = json.loads((folder / "C3/sweep-test.json").read_text())
+            self.assertEqual(checkpoint["status"], "incomplete")
+            self.assertEqual(checkpoint["function_checks"], checks.name)
+            self.assertEqual(checkpoint["results"], {})
 
     def test_sticky_split_and_reset(self):
         router = self.router("sticky")

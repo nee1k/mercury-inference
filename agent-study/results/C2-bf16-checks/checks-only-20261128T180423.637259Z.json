@@ -1,0 +1,14 @@
+{
+  "config": "C2-bf16-checks",
+  "run_id": "20261128T180423.637259Z",
+  "results": {},
+  "ready": [
+    "results/C2-bf16-checks/gpu2-20261128T180423.637259Z-ready.json",
+    "results/C2-bf16-checks/gpu3-20261128T180423.637259Z-ready.json"
+  ],
+  "function_checks": "results/C2-bf16-checks/function-checks-20261128T180821.053331Z/function-checks.json",
+  "onset_s": null,
+  "cleanup": "results/C2-bf16-checks/released-20261128T180830.122505Z.json",
+  "status": "complete",
+  "vllm_version": "0.21.0"
+}
