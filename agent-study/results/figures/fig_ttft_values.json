@@ -1,0 +1,122 @@
+[
+  {
+    "config": "C1",
+    "sessions": 8,
+    "later_p95": 1.550971233053133,
+    "source": "results/C1/full-S8-T8-20261126T202940.659391Z/result.json"
+  },
+  {
+    "config": "C1",
+    "sessions": 16,
+    "later_p95": 1.8771748357452427,
+    "source": "results/C1/full-S16-T8-20261126T203053.918470Z/result.json"
+  },
+  {
+    "config": "C1",
+    "sessions": 24,
+    "later_p95": 4.637021495075897,
+    "source": "results/C1/full-S24-T8-20261126T203237.179455Z/result.json"
+  },
+  {
+    "config": "C1",
+    "sessions": 32,
+    "later_p95": 17.54064211482182,
+    "source": "results/C1/full-S32-T8-20261126T203504.619335Z/result.json"
+  },
+  {
+    "config": "C1",
+    "sessions": 48,
+    "later_p95": 53.1398197687231,
+    "source": "results/C1/full-S48-T8-20261126T203839.705224Z/result.json"
+  },
+  {
+    "config": "C2",
+    "sessions": 8,
+    "later_p95": 1.6583861885592341,
+    "source": "results/C2/full-S8-T8-20261127T073438.512592Z/result.json"
+  },
+  {
+    "config": "C2",
+    "sessions": 16,
+    "later_p95": 2.7662208620924487,
+    "source": "results/C2/full-S16-T8-20261127T073545.011676Z/result.json"
+  },
+  {
+    "config": "C2",
+    "sessions": 24,
+    "later_p95": 2.954918887885288,
+    "source": "results/C2/full-S24-T8-20261127T073708.471166Z/result.json"
+  },
+  {
+    "config": "C2",
+    "sessions": 32,
+    "later_p95": 9.02318792343139,
+    "source": "results/C2/full-S32-T8-20261127T073849.913134Z/result.json"
+  },
+  {
+    "config": "C2",
+    "sessions": 48,
+    "later_p95": 35.66129326377995,
+    "source": "results/C2/full-S48-T8-20261127T074110.977028Z/result.json"
+  },
+  {
+    "config": "C3",
+    "sessions": 8,
+    "later_p95": 0.9007342350669205,
+    "source": "results/C3/full-S8-T8-20261128T181523.700438Z/result.json"
+  },
+  {
+    "config": "C3",
+    "sessions": 16,
+    "later_p95": 1.7049793684855101,
+    "source": "results/C3/full-S16-T8-20261128T181629.941582Z/result.json"
+  },
+  {
+    "config": "C3",
+    "sessions": 24,
+    "later_p95": 2.914618015754968,
+    "source": "results/C3/full-S24-T8-20261128T181753.923903Z/result.json"
+  },
+  {
+    "config": "C3",
+    "sessions": 32,
+    "later_p95": 4.015019416483119,
+    "source": "results/C3/full-S32-T8-20261128T181935.757809Z/result.json"
+  },
+  {
+    "config": "C3",
+    "sessions": 48,
+    "later_p95": 4.398770370520651,
+    "source": "results/C3/full-S48-T8-20261128T182127.441117Z/result.json"
+  },
+  {
+    "config": "C4",
+    "sessions": 8,
+    "later_p95": 0.8932719056028873,
+    "source": "results/C4/full-S8-T8-20261128T185110.186168Z/result.json"
+  },
+  {
+    "config": "C4",
+    "sessions": 16,
+    "later_p95": 2.8076894520316245,
+    "source": "results/C4/full-S16-T8-20261128T185217.589584Z/result.json"
+  },
+  {
+    "config": "C4",
+    "sessions": 24,
+    "later_p95": 2.2285750278737395,
+    "source": "results/C4/full-S24-T8-20261128T185341.288780Z/result.json"
+  },
+  {
+    "config": "C4",
+    "sessions": 32,
+    "later_p95": 3.724684733804315,
+    "source": "results/C4/full-S32-T8-20261128T185522.890271Z/result.json"
+  },
+  {
+    "config": "C4",
+    "sessions": 48,
+    "later_p95": 14.847356647951528,
+    "source": "results/C4/full-S48-T8-20261128T185725.201438Z/result.json"
+  }
+]
