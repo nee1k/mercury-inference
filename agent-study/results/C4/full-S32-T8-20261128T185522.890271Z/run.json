@@ -1,0 +1,90 @@
+{
+  "config": "C4",
+  "phase": "full",
+  "sessions": 32,
+  "turns": 8,
+  "run_id": "20261128T184543.363766Z",
+  "routing": {
+    "distinct_sessions_served": {
+      "http://localhost:8120": 16,
+      "http://localhost:8121": 16
+    },
+    "final_sticky_assignments": {
+      "http://localhost:8120": [
+        "s32-00",
+        "s32-01",
+        "s32-03",
+        "s32-04",
+        "s32-05",
+        "s32-08",
+        "s32-11",
+        "s32-16",
+        "s32-19",
+        "s32-22",
+        "s32-24",
+        "s32-25",
+        "s32-26",
+        "s32-27",
+        "s32-28",
+        "s32-30"
+      ],
+      "http://localhost:8121": [
+        "s32-02",
+        "s32-06",
+        "s32-07",
+        "s32-09",
+        "s32-10",
+        "s32-12",
+        "s32-13",
+        "s32-14",
+        "s32-15",
+        "s32-17",
+        "s32-18",
+        "s32-20",
+        "s32-21",
+        "s32-23",
+        "s32-29",
+        "s32-31"
+      ]
+    },
+    "assigned_sessions": {
+      "http://localhost:8120": 16,
+      "http://localhost:8121": 16
+    }
+  },
+  "router_mode": "sticky",
+  "replicas": [
+    "http://localhost:8120",
+    "http://localhost:8121"
+  ],
+  "model": "Qwen/Qwen3-32B",
+  "replica_gpus": {
+    "http://localhost:8120": 2,
+    "http://localhost:8121": 3
+  },
+  "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+  "vllm_version": "0.21.0",
+  "seed": 0,
+  "calibration": {
+    "system": {
+      "words": 1998,
+      "sample_tokens": 2048,
+      "target_tokens": 2048
+    },
+    "task": {
+      "words": 1006,
+      "sample_tokens": 1024,
+      "target_tokens": 1024
+    },
+    "tool": {
+      "words": 2021,
+      "sample_tokens": 2048,
+      "target_tokens": 2048
+    }
+  },
+  "attempted": 256,
+  "errors": 0,
+  "status": "complete",
+  "stop_reasons": [],
+  "elapsed_seconds": 121.39789276849478
+}

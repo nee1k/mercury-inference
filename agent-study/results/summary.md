@@ -27,7 +27,7 @@ Latency uses successful turns and is in seconds. Context is the final-turn range
 - C1 — first observed at [S=48](C1/sweep-20261126T202631.742740Z.json).
 - C2 — first observed at [S=48](C2/sweep-20261127T072909.617020Z.json).
 - C3 — [None through 48 sessions](C3/sweep-20261128T181103.552840Z.json).
-- C4 — full sweep pending.
+- C4 — [32 sessions](C4/sweep-20261128T184543.363766Z.json).
 
 ## C1 cache measurement rerun
 
@@ -64,3 +64,23 @@ All 1,024 turns completed. Each load split sessions evenly between the replicas,
 | 24 | 0 | 80.57% | 2.915 | [Result](C3/full-S24-T8-20261128T181753.923903Z/result.json) |
 | 32 | 0 | 80.56% | 4.015 | [Result](C3/full-S32-T8-20261128T181935.757809Z/result.json) |
 | 48 | 0 | 80.57% | 4.399 | [Result](C3/full-S48-T8-20261128T182127.441117Z/result.json) |
+
+## C4 native host-offload sweep
+
+C4 kept C2’s BF16 weights, default BF16 KV, 16-token GPU blocks, and balanced sticky routing. GPUs 2 and 3 provided 251,104 and 251,104 GPU KV tokens respectively, each backed by a 100 GiB native host tier. All five function checks passed, all 1,024 turns completed, and each session stayed on its assigned replica. [GPU 2 cache config](C4/gpu2-20261128T184543.363766Z-cache-config.txt) · [GPU 3 cache config](C4/gpu3-20261128T184543.363766Z-cache-config.txt) · [Function checks](C4/function-checks-20261128T185107.143347Z/function-checks.json) · [C4 sweep](C4/sweep-20261128T184543.363766Z.json)
+
+Each pair gives C2 / C4. Request hit rate is cached prompt tokens divided by total prompt tokens across successful requests. It includes host hits on C4. The external hit column shows the increase in the connector’s hit-token counter summed across replicas. Deferred requests can cause repeated prefix lookups, so the table uses stream usage for the hit percentage. [vLLM 48860](https://github.com/vllm-project/vllm/pull/48860)
+
+| Sessions | Preemptions | Request hit rate | External hit tokens | Turns 2–8 p95 TTFT (s) | Evidence |
+|---:|---:|---:|---:|---:|---|
+| 8 | 0 / 0 | 79.99% / 80.00% | 0 / 0 | 1.658 / 0.893 | [C2](C2/full-S8-T8-20261127T073438.512592Z/result.json) · [C4](C4/full-S8-T8-20261128T185110.186168Z/result.json) |
+| 16 | 0 / 0 | 80.56% / 80.56% | 0 / 0 | 2.766 / 2.808 | [C2](C2/full-S16-T8-20261127T073545.011676Z/result.json) · [C4](C4/full-S16-T8-20261128T185217.589584Z/result.json) |
+| 24 | 0 / 0 | 80.57% / 80.56% | 0 / 0 | 2.955 / 2.229 | [C2](C2/full-S24-T8-20261127T073708.471166Z/result.json) · [C4](C4/full-S24-T8-20261128T185341.288780Z/result.json) |
+| 32 | 0 / 3 | 71.32% / 80.56% | 0 / 233,856 | 9.023 / 3.725 | [C2](C2/full-S32-T8-20261127T073849.913134Z/result.json) · [C4](C4/full-S32-T8-20261128T185522.890271Z/result.json) |
+| 48 | 4 / 7 | 38.37% / 80.12% | 0 / 1,797,376 | 35.661 / 14.847 | [C2](C2/full-S48-T8-20261127T074110.977028Z/result.json) · [C4](C4/full-S48-T8-20261128T185725.201438Z/result.json) |
+
+Queueing first appeared at 16 sessions. Preemption first appeared at 32 sessions. At 32 sessions, later-turn p95 TTFT was 3.725 s with C4 versus 9.023 s with C2. The connector reported 233,856 external hit tokens and transferred 57.20 GiB from host to GPU. At 48 sessions, later-turn p95 TTFT was 14.847 s with C4 versus 35.661 s with C2. The connector reported 1,797,376 external hit tokens and transferred 448.90 GiB from host to GPU. Both high-load measurements support H4. [32 sessions](C4/full-S32-T8-20261128T185522.890271Z/result.json) · [48 sessions](C4/full-S48-T8-20261128T185725.201438Z/result.json)
+
+Transfer counters report bytes and cumulative seconds by direction. Histogram bucket bounds and sums are in bytes, and counts are operations. The per-load result files include the external hit and query deltas for each replica and the transfer series with direction labels. [C4 paper values](paper_values_c4.json)
+
+Both GPUs returned to idle. Host MemAvailable was 1,073.813 GiB before launch and 1,079.958 GiB after shutdown (+6.185 GiB relative to the prelaunch minimum of 1,073.774 GiB). [Prelaunch](C4/prelaunch-20261128T184543.363766Z.json) · [Release](C4/released-20261128T190045.348565Z.json)

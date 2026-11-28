@@ -5,7 +5,7 @@ from collections import Counter
 import json
 import os
 
-from replay import COUNTERS, FULL_SESSIONS, KV_USAGE, METRICS, RUNNING, WAITING
+from replay import COUNTERS, EXTERNAL_COUNTERS, FULL_SESSIONS, KV_USAGE, METRICS, RUNNING, WAITING
 from study import BF16_CHECKS, CONFIGS, RESULTS, ROOT, save
 
 
@@ -20,6 +20,40 @@ def percentile(values, fraction):
     position = fraction * (len(values) - 1)
     index = int(position)
     return values[index] + (position - index) * (values[min(index + 1, len(values) - 1)] - values[index])
+
+
+def counter_delta(values):
+    if not values or any(v is None for v in values) or any(a > b for a, b in zip(values, values[1:])):
+        return None
+    return values[-1] - values[0]
+
+
+def offload_summary(series):
+    external = {}
+    transfers = {}
+    for replica, rows in series.items():
+        external[replica] = {name: counter_delta([row.get(name) for row in rows])
+                             for name in EXTERNAL_COUNTERS}
+        snapshots = [row["kv_transfers"] for row in rows]
+        metadata = sorted({line for snap in snapshots for line in snap["metadata"]})
+        keys = sorted({key for snap in snapshots for key in snap["samples"]})
+        observations = {}
+        for key in keys:
+            values = [snap["samples"].get(key) for snap in snapshots]
+            observed = next(i for i, value in enumerate(values) if value is not None)
+            item = {"baseline": values[0], "final": values[-1], "first_sample_index": observed}
+            name = key.partition("{")[0]
+            if name.endswith(("_total", "_bucket", "_count", "_sum")):
+                # Native offload instantiates each labeled counter on its first operation.
+                sequence = values if observed == 0 else [0, *values[observed:]]
+                item["delta"] = counter_delta(sequence)
+            observations[key] = item
+        transfers[replica] = {"metadata": metadata, "series": observations}
+    result = {"external_counter_deltas_by_replica": external, "kv_transfers": transfers}
+    for name, field in zip(EXTERNAL_COUNTERS, ("external_hit_tokens", "external_query_tokens")):
+        values = [row[name] for row in external.values()]
+        result[field] = int(sum(values)) if all(v is not None for v in values) else None
+    return result
 
 
 def summarize_run(path):
@@ -74,8 +108,11 @@ def summarize_run(path):
              and all(row["replica"] in series for row in turns)
              and all(value is not None for value in deltas.values())
              and 0 <= deltas[hits] <= deltas[queries])
+    extra = offload_summary(series) if run.get("config") == "C4" else {}
+    if extra:
+        valid = valid and all(extra[k] is not None for k in ("external_hit_tokens", "external_query_tokens"))
     return {
-        "run": run, "path": path, "first_p50": percentile(first, 0.50),
+        **extra, "run": run, "path": path, "first_p50": percentile(first, 0.50),
         "first_p95": percentile(first, 0.95), "later_p50": percentile(later, 0.50),
         "later_p95": percentile(later, 0.95), "e2e_p95": percentile(latency, 0.95),
         "valid": valid, "counter_increases": deltas, "preemptions": deltas[preempt],
@@ -130,13 +167,13 @@ def write_paper_values(sweeps, output=RESULTS / "paper_values.json", *, include_
 
     for config, (path, sweep) in sweeps.items():
         key = config.lower()
-        if config in ("C1", "C3") and sweep["ready"]:
+        if config in ("C1", "C3", "C4") and sweep["ready"]:
             ready = ROOT / sweep["ready"][0]
             add(f"{key}_weights_GiB", ready, "model_loading_gib", "Model memory at load in GiB")
             add(f"{key}_kv_tokens", ready, "kv_cache_tokens", "GPU KV cache tokens per replica", ",d")
             add(f"{key}_conc32k", ready, "max_concurrency", "Estimated concurrency per replica at 32K")
-        if config == "C3" and sweep.get("queueing_onset_s") is not None:
-            add("c3_queueing_onset_s", path, "queueing_onset_s", "Smallest tested S with sampled waiting requests")
+        if config in ("C3", "C4") and sweep.get("queueing_onset_s") is not None:
+            add(f"{key}_queueing_onset_s", path, "queueing_onset_s", "Smallest tested S with sampled waiting requests")
         if sweep["onset_s"] is not None:
             add(f"{key}_onset_s", path, "onset_s", "Smallest tested S with preemption")
         for size, source in sweep["results"].items():
@@ -145,12 +182,16 @@ def write_paper_values(sweeps, output=RESULTS / "paper_values.json", *, include_
             if not row["valid"]:
                 continue
             add(f"{key}_s{size}_preemptions", result, "preemptions", "Preemption increase across both GPUs")
+            if config == "C4":
+                for field in ("external_hit_tokens", "external_query_tokens"):
+                    add(f"{key}_s{size}_{field}", result, field, field.replace("_", " ").capitalize()
+                        + " across both replicas", ",d")
             if include_request_hits:
                 add(f"{key}_s{size}_request_hit_pct", result, "request_hit_pct",
                     "Percentage of successful prompt tokens served from cache", ".1f")
             if int(size) == 24 and row["prefix_hit_pct"] is not None:
                 add(f"{key}_s24_hit_pct", result, "prefix_hit_pct", "Prefix hit rate as a percentage across both GPUs", ".1f")
-            if int(size) in (24, 32):
+            if int(size) in (24, 32) or config == "C4":
                 add(f"{key}_s{size}_ttft_later_s", result, "later_p95", "Turns 2–8 p95 TTFT in seconds", ".3f")
         if config in ("C3", "C4") and sweep["function_checks"]:
             add(f"{key}_function_checks", ROOT / sweep["function_checks"], "status", "Protocol check outcome")

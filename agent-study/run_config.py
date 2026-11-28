@@ -4,6 +4,7 @@ import argparse
 from concurrent.futures import ThreadPoolExecutor
 import json
 import os
+from pathlib import Path
 import subprocess
 import sys
 import time
@@ -49,17 +50,20 @@ def run_function_checks(config, record):
     return result_path
 
 
-def record_fp8_cache_config(endpoint, path):
+def record_cache_config(config, endpoint, path):
     with request(endpoint, "/metrics") as response:
         samples = [line for line in response.read().decode().splitlines()
                    if line.startswith("vllm:cache_config_info{")]
     path.write_text("\n".join(samples) + "\n")
     required = {'cache_dtype="fp8"', 'calculate_kv_scales="False"', 'block_size="16"'}
+    if config == "C4":
+        required = {'cache_dtype="auto"', 'block_size="16"', 'kv_offloading_backend="native"'}
     if len(samples) == 1:
         labels = samples[0].partition("{")[2].partition("}")[0].split(",")
-        if required.issubset(labels):
+        size_ok = config != "C4" or bool({'kv_offloading_size="100"', 'kv_offloading_size="100.0"'}.intersection(labels))
+        if required.issubset(labels) and size_ok:
             return
-    raise RuntimeError(f"Unexpected FP8 KV configuration at {endpoint}, see {path.name}")
+    raise RuntimeError(f"Unexpected {config} KV configuration at {endpoint}, see {path.name}")
 
 
 def start_router(config, run_id, router_port, replicas):
@@ -101,16 +105,59 @@ def controllers(config, run_id, gpus, ports):
         raise RuntimeError("Replica startup failed; see launcher logs")
 
 
+def available_memory():
+    for line in Path("/proc/meminfo").read_text().splitlines():
+        if line.startswith("MemAvailable:"):
+            _, amount, unit = line.split()
+            if unit == "kB":
+                return {"timestamp": stamp(), "MemAvailable_KiB": int(amount)}
+    raise RuntimeError("Missing MemAvailable in /proc/meminfo")
+
+
+def sample_host_baseline():
+    samples = [available_memory()]
+    for _ in range(10):
+        time.sleep(1)
+        samples.append(available_memory())
+    return samples
+
+
+def record_host_recovery(prelaunch):
+    baseline = prelaunch["host_memory"]
+    minimum = baseline["min_KiB"]
+    deadline = time.monotonic() + 120
+    samples = [available_memory()]
+    while samples[-1]["MemAvailable_KiB"] < minimum and time.monotonic() < deadline:
+        time.sleep(min(2, max(0, deadline - time.monotonic())))
+        samples.append(available_memory())
+    final = samples[-1]["MemAvailable_KiB"]
+    return {"samples": samples, "final_KiB": final, "baseline_min_KiB": minimum,
+            "delta_from_min_KiB": final - minimum,
+            "delta_from_prelaunch_KiB": final - baseline["final_KiB"],
+            "recovered": final >= minimum}
+
+
 def select_gpus(preferred, folder, run_id, *, exact=False):
     checks = {}
-    with ThreadPoolExecutor(max_workers=2) as pool:
+    host_check = folder.name == "C4"
+    with ThreadPoolExecutor(max_workers=3 if host_check else 2) as pool:
+        host_samples = pool.submit(sample_host_baseline) if host_check else None
         checks.update(zip(preferred, pool.map(sample_idle, preferred)))
         if not exact and not all(check["idle"] for check in checks.values()):
             remaining = [gpu for gpu in range(4) if gpu not in preferred]
             checks.update(zip(remaining, pool.map(sample_idle, remaining)))
     idle = [gpu for gpu, check in checks.items() if check["idle"]]
     path = folder / f"prelaunch-{run_id}.json"
-    save(path, {"checks": checks, "idle": idle, "vllm_version": VERSION})
+    evidence = {"checks": checks, "idle": idle, "vllm_version": VERSION}
+    if host_check:
+        samples = [*host_samples.result(), available_memory()]
+        values = [row["MemAvailable_KiB"] for row in samples]
+        evidence["host_memory"] = {"samples": samples, "min_KiB": min(values),
+                                   "max_KiB": max(values), "final_KiB": values[-1],
+                                   "required_KiB": 240 * 1024**2}
+    save(path, evidence)
+    if host_check and values[-1] < evidence["host_memory"]["required_KiB"]:
+        raise RuntimeError(f"Less than 240 GiB MemAvailable; see {path.name}")
     if len(idle) < 2:
         raise RuntimeError(f"Fewer than two GPUs passed the idle check; see {path.name}")
     return idle[:2]
@@ -162,7 +209,9 @@ def run_config(config, phase, gpus, ports):
             sweep.update(status="skipped", reason=str(exc))
             print(str(exc), flush=True)
             return False
-        gpus = select_gpus(gpus, folder, run_id, exact=config in (BF16_CHECKS, "C3"))
+        if config == "C4":
+            sweep["prelaunch"] = relative(folder / f"prelaunch-{run_id}.json")
+        gpus = select_gpus(gpus, folder, run_id, exact=config in (BF16_CHECKS, "C3", "C4"))
         ports = select_ports(ports)
         replicas = tuple(base_url(port) for port in ports[:2])
         print(f"Starting {config} {phase} on GPUs {gpus}, replicas {replicas}", flush=True)
@@ -173,12 +222,12 @@ def run_config(config, phase, gpus, ports):
         controllers(config, run_id, gpus, ports[:2])
         sweep["ready"] = [relative(folder / f"gpu{gpu}-{run_id}-ready.json") for gpu in gpus]
         router = start_router(config, run_id, ports[2], replicas)
-        if config == "C3":
+        if config in ("C3", "C4"):
             sweep["cache_config"] = []
             for gpu, endpoint in zip(gpus, replicas):
                 path = folder / f"gpu{gpu}-{run_id}-cache-config.txt"
                 sweep["cache_config"].append(relative(path))
-                record_fp8_cache_config(endpoint, path)
+                record_cache_config(config, endpoint, path)
         if config in (BF16_CHECKS, "C3", "C4"):
             record = managed(f"gpu{gpus[0]}")
             sweep["function_checks"] = relative(run_function_checks(config, record))
@@ -198,7 +247,7 @@ def run_config(config, phase, gpus, ports):
                 raise RuntimeError("Replay did not complete; remaining shapes are paused")
         if phase == "full":
             sweep["onset_s"] = sweep_onset(rows)
-            if config == "C3" and sweep["onset_s"] is not None:
+            if config in ("C3", "C4") and sweep["onset_s"] is not None:
                 sweep["queueing_onset_s"] = min((s for s, row in rows.items() if row["peak_waiting"] > 0), default="none")
             if config == "C1" and all(row["valid"] for row in rows.values()):
                 c1_probe.record(["c1_probe.py", "live", str(gpus[0])], study_python=True)
@@ -212,6 +261,10 @@ def run_config(config, phase, gpus, ports):
             if attempted_launch:
                 cleanup = release(config, run_id)
                 sweep["cleanup"] = cleanup["source"]
+                if config == "C4":
+                    prelaunch = json.loads((ROOT / sweep["prelaunch"]).read_text())
+                    cleanup["host_memory"] = record_host_recovery(prelaunch)
+                    save(ROOT / cleanup["source"], cleanup)
                 if not cleanup["memory_released"]:
                     sweep["status"] = "cleanup incomplete"
         finally:
@@ -226,14 +279,15 @@ def run_config(config, phase, gpus, ports):
                     write_paper_values({"C1": (path, sweep)},
                                        RESULTS / "paper_values_c1_rerun.json",
                                        include_request_hits=True)
-            elif config == "C3" and sweep["status"] == "complete":
-                write_paper_values({"C3": (path, sweep)}, RESULTS / "paper_values_c3.json", include_request_hits=True)
-            elif config not in (BF16_CHECKS, "C3"):
+            elif config in ("C3", "C4") and sweep["status"] == "complete":
+                write_paper_values({config: (path, sweep)}, RESULTS / f"paper_values_{config.lower()}.json",
+                                   include_request_hits=True)
+            elif config not in (BF16_CHECKS, "C3", "C4"):
                 write_paper_values(current_sweeps())
             if config == "C1" and phase == "full" and sweep["status"] == "complete":
                 for gpu in gpus:
                     c1_probe.record(["c1_probe.py", "copies", str(gpu)], study_python=True)
-            if config not in (BF16_CHECKS, "C3"):
+            if config not in (BF16_CHECKS, "C3", "C4"):
                 summary = make_summary()
                 print(f"Summary contains {len(summary)} runs", flush=True)
     return sweep["status"] == "complete"

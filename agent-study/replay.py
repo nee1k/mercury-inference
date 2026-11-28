@@ -97,9 +97,29 @@ def metric_values(raw):
     return {name: series[0] for name, series in values.items() if series}
 
 
-def scrape(base):
+def transfer_metrics(raw):
+    # Keep labels verbatim so transfer directions and histogram buckets stay distinct.
+    samples = {}
+    metadata = []
+    for line in raw.splitlines():
+        if line.startswith(("# HELP ", "# TYPE ", "# UNIT ")):
+            name = line.split()[2]
+            if name.startswith("vllm:") and ("offload" in name or "transfer" in name):
+                metadata.append(line)
+        elif (match := LINE.fullmatch(line)):
+            name = match["name"]
+            if name.startswith("vllm:") and ("offload" in name or "transfer" in name):
+                samples[line[:match.start("value")].rstrip()] = float(match["value"])
+    return {"metadata": metadata, "samples": samples}
+
+
+def scrape(base, *, include_transfers=False):
     with request(base, "/metrics", timeout=1) as response:
-        return metric_values(response.read().decode())
+        raw = response.read().decode()
+    metrics = metric_values(raw)
+    if include_transfers:
+        metrics["kv_transfers"] = transfer_metrics(raw)
+    return metrics
 
 
 def routing_stats(results, replicas, assignments):
@@ -277,7 +297,7 @@ def replay(config, router, replicas, sessions, turns, phase):
         row = {"timestamp": stamp(), "elapsed_seconds": time.monotonic() - begin,
                "replica": base, "vllm_version": VERSION}
         try:
-            return {**row, "metrics": scrape(base)}
+            return {**row, "metrics": scrape(base, include_transfers=config == "C4")}
         except (OSError, ValueError) as exc:
             return {**row, "error": f"{type(exc).__name__}: {exc}"}
 

@@ -39,7 +39,7 @@ class StudyTests(unittest.TestCase):
                                 relative=lambda p: str(p.relative_to(folder)),
                                 select_gpus=Mock(return_value=[2, 3]), controllers=Mock(),
                                 select_ports=Mock(return_value=[8120, 8121, 8122]),
-                                start_router=Mock(), managed=Mock(), record_fp8_cache_config=Mock(),
+                                start_router=Mock(), managed=Mock(), record_cache_config=Mock(),
                                 run_function_checks=Mock(return_value=checks), replay=replay,
                                 release=cleanup):
                 with self.assertRaisesRegex(RuntimeError, "Function checks failed"):
@@ -50,6 +50,56 @@ class StudyTests(unittest.TestCase):
             self.assertEqual(checkpoint["status"], "incomplete")
             self.assertEqual(checkpoint["function_checks"], checks.name)
             self.assertEqual(checkpoint["results"], {})
+
+    def test_c4_memory_threshold(self):
+        import run_config as controller
+        threshold = 240 * 1024**2
+        with tempfile.TemporaryDirectory() as tmp:
+            folder = Path(tmp) / "C4"
+            folder.mkdir()
+            for amount in (threshold - 1, threshold):
+                sample = {"timestamp": "test", "MemAvailable_KiB": amount}
+                with (patch.object(controller, "available_memory", return_value=sample),
+                      patch.object(controller, "sample_host_baseline", return_value=[sample]),
+                      patch.object(controller, "sample_idle", return_value={"idle": True})):
+                    if amount < threshold:
+                        with self.assertRaisesRegex(RuntimeError, "240 GiB"):
+                            controller.select_gpus([2, 3], folder, "test", exact=True)
+                    else:
+                        self.assertEqual(controller.select_gpus([2, 3], folder, "test", exact=True), [2, 3])
+                evidence = json.loads((folder / "prelaunch-test.json").read_text())
+                self.assertEqual(evidence["host_memory"]["final_KiB"], amount)
+
+    def test_c4_host_release_uses_prelaunch_minimum(self):
+        import run_config as controller
+        baseline = {"host_memory": {"min_KiB": 100, "final_KiB": 102}}
+        with (patch.object(controller, "available_memory", side_effect=[
+                {"MemAvailable_KiB": 98}, {"MemAvailable_KiB": 100}]),
+              patch.object(controller.time, "sleep")):
+            evidence = controller.record_host_recovery(baseline)
+        self.assertTrue(evidence["recovered"])
+        self.assertEqual(evidence["delta_from_prelaunch_KiB"], -2)
+        with (patch.object(controller, "available_memory", return_value={"MemAvailable_KiB": 90}),
+              patch.object(controller.time, "monotonic", side_effect=[0, 120])):
+            evidence = controller.record_host_recovery(baseline)
+        self.assertFalse(evidence["recovered"])
+        self.assertEqual(evidence["delta_from_min_KiB"], -10)
+
+    def test_c4_transfer_labels_and_external_resets(self):
+        from replay import transfer_metrics
+        from summarize import offload_summary
+        hit, query = EXTERNAL_COUNTERS
+        a = 'vllm:kv_offload_total_bytes_total{transfer_type="CPU_to_GPU"}'
+        b = a.replace("CPU_to_GPU", "GPU_to_CPU")
+        rows = [{hit: 5, query: 8, "kv_transfers": transfer_metrics(f"{a} 10")},
+                {hit: 9, query: 18, "kv_transfers": transfer_metrics(f"{a} 12\n{b} 6")}]
+        out = offload_summary(dict.fromkeys(REPLICAS, rows))
+        self.assertEqual((out["external_hit_tokens"], out["external_query_tokens"]), (8, 20))
+        transfers = out["kv_transfers"][REPLICAS[0]]["series"]
+        self.assertEqual((transfers[a]["delta"], transfers[b]["delta"]), (2, 6))
+        self.assertIsNone(transfers[b]["baseline"])
+        rows[-1][hit] = 4
+        self.assertIsNone(offload_summary({"replica": rows})["external_hit_tokens"])
 
     def test_sticky_split_and_reset(self):
         router = self.router("sticky")

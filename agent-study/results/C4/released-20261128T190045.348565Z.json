@@ -1,0 +1,41 @@
+{
+  "config": "C4",
+  "run_id": "20261128T184543.363766Z",
+  "vllm_version": "0.21.0",
+  "timestamp": "20261128T190045.348555Z",
+  "gpu_samples": [
+    {
+      "timestamp": "20261128T190045.087752Z",
+      "uuid": "GPU-f5299d01-a6ce-a4bb-2691-4b5117129ed1",
+      "index": 2,
+      "used_mib": 5.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    },
+    {
+      "timestamp": "20261128T190045.348350Z",
+      "uuid": "GPU-0272b154-df04-4071-6e4c-060455dae529",
+      "index": 3,
+      "used_mib": 4.0,
+      "gpu_util_percent": 0.0,
+      "pids": []
+    }
+  ],
+  "live_study_pids": [],
+  "errors": [],
+  "memory_released": true,
+  "source": "results/C4/released-20261128T190045.348565Z.json",
+  "host_memory": {
+    "samples": [
+      {
+        "timestamp": "20261128T190045.351484Z",
+        "MemAvailable_KiB": 1132418508
+      }
+    ],
+    "final_KiB": 1132418508,
+    "baseline_min_KiB": 1125933584,
+    "delta_from_min_KiB": 6484924,
+    "delta_from_prelaunch_KiB": 6444352,
+    "recovered": true
+  }
+}

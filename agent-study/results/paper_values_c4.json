@@ -1,0 +1,194 @@
+{
+  "c4_weights_GiB": {
+    "value": "61.03",
+    "display": "61.03",
+    "source": "results/C4/gpu2-20261128T184543.363766Z-ready.json",
+    "what": "Model memory at load in GiB"
+  },
+  "c4_kv_tokens": {
+    "value": "251104",
+    "display": "251,104",
+    "source": "results/C4/gpu2-20261128T184543.363766Z-ready.json",
+    "what": "GPU KV cache tokens per replica"
+  },
+  "c4_conc32k": {
+    "value": "7.66",
+    "display": "7.66",
+    "source": "results/C4/gpu2-20261128T184543.363766Z-ready.json",
+    "what": "Estimated concurrency per replica at 32K"
+  },
+  "c4_queueing_onset_s": {
+    "value": "16",
+    "display": "16",
+    "source": "results/C4/sweep-20261128T184543.363766Z.json",
+    "what": "Smallest tested S with sampled waiting requests"
+  },
+  "c4_onset_s": {
+    "value": "32",
+    "display": "32",
+    "source": "results/C4/sweep-20261128T184543.363766Z.json",
+    "what": "Smallest tested S with preemption"
+  },
+  "c4_s8_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C4/full-S8-T8-20261128T185110.186168Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c4_s8_external_hit_tokens": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C4/full-S8-T8-20261128T185110.186168Z/result.json",
+    "what": "External hit tokens across both replicas"
+  },
+  "c4_s8_external_query_tokens": {
+    "value": "144789",
+    "display": "144,789",
+    "source": "results/C4/full-S8-T8-20261128T185110.186168Z/result.json",
+    "what": "External query tokens across both replicas"
+  },
+  "c4_s8_request_hit_pct": {
+    "value": "79.99988949375708",
+    "display": "80.0",
+    "source": "results/C4/full-S8-T8-20261128T185110.186168Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c4_s8_ttft_later_s": {
+    "value": "0.8932719056028873",
+    "display": "0.893",
+    "source": "results/C4/full-S8-T8-20261128T185110.186168Z/result.json",
+    "what": "Turns 2\u20138 p95 TTFT in seconds"
+  },
+  "c4_s16_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C4/full-S16-T8-20261128T185217.589584Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c4_s16_external_hit_tokens": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C4/full-S16-T8-20261128T185217.589584Z/result.json",
+    "what": "External hit tokens across both replicas"
+  },
+  "c4_s16_external_query_tokens": {
+    "value": "282380",
+    "display": "282,380",
+    "source": "results/C4/full-S16-T8-20261128T185217.589584Z/result.json",
+    "what": "External query tokens across both replicas"
+  },
+  "c4_s16_request_hit_pct": {
+    "value": "80.55764405850746",
+    "display": "80.6",
+    "source": "results/C4/full-S16-T8-20261128T185217.589584Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c4_s16_ttft_later_s": {
+    "value": "2.8076894520316245",
+    "display": "2.808",
+    "source": "results/C4/full-S16-T8-20261128T185217.589584Z/result.json",
+    "what": "Turns 2\u20138 p95 TTFT in seconds"
+  },
+  "c4_s24_preemptions": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C4/full-S24-T8-20261128T185341.288780Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c4_s24_external_hit_tokens": {
+    "value": "0",
+    "display": "0",
+    "source": "results/C4/full-S24-T8-20261128T185341.288780Z/result.json",
+    "what": "External hit tokens across both replicas"
+  },
+  "c4_s24_external_query_tokens": {
+    "value": "422174",
+    "display": "422,174",
+    "source": "results/C4/full-S24-T8-20261128T185341.288780Z/result.json",
+    "what": "External query tokens across both replicas"
+  },
+  "c4_s24_request_hit_pct": {
+    "value": "80.56473465223833",
+    "display": "80.6",
+    "source": "results/C4/full-S24-T8-20261128T185341.288780Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c4_s24_hit_pct": {
+    "value": "80.56473465223833",
+    "display": "80.6",
+    "source": "results/C4/full-S24-T8-20261128T185341.288780Z/result.json",
+    "what": "Prefix hit rate as a percentage across both GPUs"
+  },
+  "c4_s24_ttft_later_s": {
+    "value": "2.2285750278737395",
+    "display": "2.229",
+    "source": "results/C4/full-S24-T8-20261128T185341.288780Z/result.json",
+    "what": "Turns 2\u20138 p95 TTFT in seconds"
+  },
+  "c4_s32_preemptions": {
+    "value": "3",
+    "display": "3",
+    "source": "results/C4/full-S32-T8-20261128T185522.890271Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c4_s32_external_hit_tokens": {
+    "value": "233856",
+    "display": "233,856",
+    "source": "results/C4/full-S32-T8-20261128T185522.890271Z/result.json",
+    "what": "External hit tokens across both replicas"
+  },
+  "c4_s32_external_query_tokens": {
+    "value": "798254",
+    "display": "798,254",
+    "source": "results/C4/full-S32-T8-20261128T185522.890271Z/result.json",
+    "what": "External query tokens across both replicas"
+  },
+  "c4_s32_request_hit_pct": {
+    "value": "80.56050958924115",
+    "display": "80.6",
+    "source": "results/C4/full-S32-T8-20261128T185522.890271Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c4_s32_ttft_later_s": {
+    "value": "3.724684733804315",
+    "display": "3.725",
+    "source": "results/C4/full-S32-T8-20261128T185522.890271Z/result.json",
+    "what": "Turns 2\u20138 p95 TTFT in seconds"
+  },
+  "c4_s48_preemptions": {
+    "value": "7",
+    "display": "7",
+    "source": "results/C4/full-S48-T8-20261128T185725.201438Z/result.json",
+    "what": "Preemption increase across both GPUs"
+  },
+  "c4_s48_external_hit_tokens": {
+    "value": "1797376",
+    "display": "1,797,376",
+    "source": "results/C4/full-S48-T8-20261128T185725.201438Z/result.json",
+    "what": "External hit tokens across both replicas"
+  },
+  "c4_s48_external_query_tokens": {
+    "value": "2663131",
+    "display": "2,663,131",
+    "source": "results/C4/full-S48-T8-20261128T185725.201438Z/result.json",
+    "what": "External query tokens across both replicas"
+  },
+  "c4_s48_request_hit_pct": {
+    "value": "80.1180394881128",
+    "display": "80.1",
+    "source": "results/C4/full-S48-T8-20261128T185725.201438Z/result.json",
+    "what": "Percentage of successful prompt tokens served from cache"
+  },
+  "c4_s48_ttft_later_s": {
+    "value": "14.847356647951528",
+    "display": "14.847",
+    "source": "results/C4/full-S48-T8-20261128T185725.201438Z/result.json",
+    "what": "Turns 2\u20138 p95 TTFT in seconds"
+  },
+  "c4_function_checks": {
+    "value": "PASS",
+    "display": "PASS",
+    "source": "results/C4/function-checks-20261128T185107.143347Z/function-checks.json",
+    "what": "Protocol check outcome"
+  }
+}

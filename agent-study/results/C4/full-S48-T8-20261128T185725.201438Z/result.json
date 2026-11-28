@@ -1,0 +1,638 @@
+{
+  "external_counter_deltas_by_replica": {
+    "http://localhost:8120": {
+      "vllm:external_prefix_cache_hits_total": 920640.0,
+      "vllm:external_prefix_cache_queries_total": 1343581.0
+    },
+    "http://localhost:8121": {
+      "vllm:external_prefix_cache_hits_total": 876736.0,
+      "vllm:external_prefix_cache_queries_total": 1319550.0
+    }
+  },
+  "kv_transfers": {
+    "http://localhost:8120": {
+      "metadata": [
+        "# HELP vllm:kv_offload_size Histogram of KV offload transfer size, in bytes.",
+        "# HELP vllm:kv_offload_size_created Histogram of KV offload transfer size, in bytes.",
+        "# HELP vllm:kv_offload_total_bytes_created Number of bytes offloaded by KV connector",
+        "# HELP vllm:kv_offload_total_bytes_total Number of bytes offloaded by KV connector",
+        "# HELP vllm:kv_offload_total_time_created Total time measured by all KV offloading operations",
+        "# HELP vllm:kv_offload_total_time_total Total time measured by all KV offloading operations",
+        "# TYPE vllm:kv_offload_size histogram",
+        "# TYPE vllm:kv_offload_size_created gauge",
+        "# TYPE vllm:kv_offload_total_bytes_created gauge",
+        "# TYPE vllm:kv_offload_total_bytes_total counter",
+        "# TYPE vllm:kv_offload_total_time_created gauge",
+        "# TYPE vllm:kv_offload_total_time_total counter"
+      ],
+      "series": {
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"+Inf\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 12.0,
+          "final": 87.0,
+          "first_sample_index": 0,
+          "delta": 75.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"+Inf\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 6233.0,
+          "final": 9970.0,
+          "first_sample_index": 0,
+          "delta": 3737.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1.5e+08\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 2.0,
+          "final": 3.0,
+          "first_sample_index": 0,
+          "delta": 1.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1.5e+08\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5890.0,
+          "final": 9424.0,
+          "first_sample_index": 0,
+          "delta": 3534.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1e+06\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 0.0,
+          "final": 0.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1e+06\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 0.0,
+          "final": 0.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 1.0,
+          "final": 1.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5887.0,
+          "final": 9416.0,
+          "first_sample_index": 0,
+          "delta": 3529.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1e+08\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 2.0,
+          "final": 3.0,
+          "first_sample_index": 0,
+          "delta": 1.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1e+08\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5890.0,
+          "final": 9424.0,
+          "first_sample_index": 0,
+          "delta": 3534.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"2e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 2.0,
+          "final": 2.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"2e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5887.0,
+          "final": 9417.0,
+          "first_sample_index": 0,
+          "delta": 3530.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"2e+08\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 2.0,
+          "final": 3.0,
+          "first_sample_index": 0,
+          "delta": 1.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"2e+08\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5890.0,
+          "final": 9426.0,
+          "first_sample_index": 0,
+          "delta": 3536.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"4e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 2.0,
+          "final": 3.0,
+          "first_sample_index": 0,
+          "delta": 1.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"4e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5887.0,
+          "final": 9417.0,
+          "first_sample_index": 0,
+          "delta": 3530.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"5e+06\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 1.0,
+          "final": 1.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"5e+06\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5885.0,
+          "final": 9413.0,
+          "first_sample_index": 0,
+          "delta": 3528.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"6e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 2.0,
+          "final": 3.0,
+          "first_sample_index": 0,
+          "delta": 1.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"6e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5888.0,
+          "final": 9418.0,
+          "first_sample_index": 0,
+          "delta": 3530.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"8e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 2.0,
+          "final": 3.0,
+          "first_sample_index": 0,
+          "delta": 1.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"8e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5890.0,
+          "final": 9424.0,
+          "first_sample_index": 0,
+          "delta": 3534.0
+        },
+        "vllm:kv_offload_size_count{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 12.0,
+          "final": 87.0,
+          "first_sample_index": 0,
+          "delta": 75.0
+        },
+        "vllm:kv_offload_size_count{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 6233.0,
+          "final": 9970.0,
+          "first_sample_index": 0,
+          "delta": 3737.0
+        },
+        "vllm:kv_offload_size_created{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 1795892219.2568357,
+          "final": 1795892219.2568357,
+          "first_sample_index": 0
+        },
+        "vllm:kv_offload_size_created{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 1795891865.4800382,
+          "final": 1795891865.4800382,
+          "first_sample_index": 0
+        },
+        "vllm:kv_offload_size_sum{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 27271364608.0,
+          "final": 270608105472.0,
+          "first_sample_index": 0,
+          "delta": 243336740864.0
+        },
+        "vllm:kv_offload_size_sum{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 209522262016.0,
+          "final": 334831288320.0,
+          "first_sample_index": 0,
+          "delta": 125309026304.0
+        },
+        "vllm:kv_offload_total_bytes_created{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 1795892219.2568724,
+          "final": 1795892219.2568724,
+          "first_sample_index": 0
+        },
+        "vllm:kv_offload_total_bytes_created{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 1795891865.4800766,
+          "final": 1795891865.4800766,
+          "first_sample_index": 0
+        },
+        "vllm:kv_offload_total_bytes_total{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 27271364608.0,
+          "final": 270608105472.0,
+          "first_sample_index": 0,
+          "delta": 243336740864.0
+        },
+        "vllm:kv_offload_total_bytes_total{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 209522262016.0,
+          "final": 334831288320.0,
+          "first_sample_index": 0,
+          "delta": 125309026304.0
+        },
+        "vllm:kv_offload_total_time_created{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 1795892219.256879,
+          "final": 1795892219.256879,
+          "first_sample_index": 0
+        },
+        "vllm:kv_offload_total_time_created{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 1795891865.480083,
+          "final": 1795891865.480083,
+          "first_sample_index": 0
+        },
+        "vllm:kv_offload_total_time_total{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 0.4837812461331487,
+          "final": 4.808917920954525,
+          "first_sample_index": 0,
+          "delta": 4.325136674821376
+        },
+        "vllm:kv_offload_total_time_total{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 3.982534262940282,
+          "final": 6.376146837420746,
+          "first_sample_index": 0,
+          "delta": 2.3936125744804646
+        }
+      }
+    },
+    "http://localhost:8121": {
+      "metadata": [
+        "# HELP vllm:kv_offload_size Histogram of KV offload transfer size, in bytes.",
+        "# HELP vllm:kv_offload_size_created Histogram of KV offload transfer size, in bytes.",
+        "# HELP vllm:kv_offload_total_bytes_created Number of bytes offloaded by KV connector",
+        "# HELP vllm:kv_offload_total_bytes_total Number of bytes offloaded by KV connector",
+        "# HELP vllm:kv_offload_total_time_created Total time measured by all KV offloading operations",
+        "# HELP vllm:kv_offload_total_time_total Total time measured by all KV offloading operations",
+        "# TYPE vllm:kv_offload_size histogram",
+        "# TYPE vllm:kv_offload_size_created gauge",
+        "# TYPE vllm:kv_offload_total_bytes_created gauge",
+        "# TYPE vllm:kv_offload_total_bytes_total counter",
+        "# TYPE vllm:kv_offload_total_time_created gauge",
+        "# TYPE vllm:kv_offload_total_time_total counter"
+      ],
+      "series": {
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"+Inf\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 13.0,
+          "final": 90.0,
+          "first_sample_index": 0,
+          "delta": 77.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"+Inf\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 6176.0,
+          "final": 9931.0,
+          "first_sample_index": 0,
+          "delta": 3755.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1.5e+08\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 2.0,
+          "final": 2.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1.5e+08\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5844.0,
+          "final": 9394.0,
+          "first_sample_index": 0,
+          "delta": 3550.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1e+06\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 0.0,
+          "final": 0.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1e+06\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 0.0,
+          "final": 0.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 0.0,
+          "final": 0.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5843.0,
+          "final": 9388.0,
+          "first_sample_index": 0,
+          "delta": 3545.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1e+08\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 1.0,
+          "final": 1.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"1e+08\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5844.0,
+          "final": 9393.0,
+          "first_sample_index": 0,
+          "delta": 3549.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"2e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 0.0,
+          "final": 0.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"2e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5843.0,
+          "final": 9389.0,
+          "first_sample_index": 0,
+          "delta": 3546.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"2e+08\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 2.0,
+          "final": 3.0,
+          "first_sample_index": 0,
+          "delta": 1.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"2e+08\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5844.0,
+          "final": 9396.0,
+          "first_sample_index": 0,
+          "delta": 3552.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"4e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 0.0,
+          "final": 0.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"4e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5843.0,
+          "final": 9389.0,
+          "first_sample_index": 0,
+          "delta": 3546.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"5e+06\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 0.0,
+          "final": 0.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"5e+06\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5841.0,
+          "final": 9385.0,
+          "first_sample_index": 0,
+          "delta": 3544.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"6e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 0.0,
+          "final": 0.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"6e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5843.0,
+          "final": 9389.0,
+          "first_sample_index": 0,
+          "delta": 3546.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"8e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 1.0,
+          "final": 1.0,
+          "first_sample_index": 0,
+          "delta": 0.0
+        },
+        "vllm:kv_offload_size_bucket{engine=\"0\",le=\"8e+07\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 5844.0,
+          "final": 9393.0,
+          "first_sample_index": 0,
+          "delta": 3549.0
+        },
+        "vllm:kv_offload_size_count{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 13.0,
+          "final": 90.0,
+          "first_sample_index": 0,
+          "delta": 77.0
+        },
+        "vllm:kv_offload_size_count{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 6176.0,
+          "final": 9931.0,
+          "first_sample_index": 0,
+          "delta": 3755.0
+        },
+        "vllm:kv_offload_size_created{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 1795892220.4773655,
+          "final": 1795892220.4773655,
+          "first_sample_index": 0
+        },
+        "vllm:kv_offload_size_created{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 1795891865.4860022,
+          "final": 1795891865.4860022,
+          "first_sample_index": 0
+        },
+        "vllm:kv_offload_size_sum{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 34150023168.0,
+          "final": 272818503680.0,
+          "first_sample_index": 0,
+          "delta": 238668480512.0
+        },
+        "vllm:kv_offload_size_sum{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 209144774656.0,
+          "final": 339730235392.0,
+          "first_sample_index": 0,
+          "delta": 130585460736.0
+        },
+        "vllm:kv_offload_total_bytes_created{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 1795892220.4774022,
+          "final": 1795892220.4774022,
+          "first_sample_index": 0
+        },
+        "vllm:kv_offload_total_bytes_created{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 1795891865.486054,
+          "final": 1795891865.486054,
+          "first_sample_index": 0
+        },
+        "vllm:kv_offload_total_bytes_total{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 34150023168.0,
+          "final": 272818503680.0,
+          "first_sample_index": 0,
+          "delta": 238668480512.0
+        },
+        "vllm:kv_offload_total_bytes_total{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 209144774656.0,
+          "final": 339730235392.0,
+          "first_sample_index": 0,
+          "delta": 130585460736.0
+        },
+        "vllm:kv_offload_total_time_created{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 1795892220.4774084,
+          "final": 1795892220.4774084,
+          "first_sample_index": 0
+        },
+        "vllm:kv_offload_total_time_created{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 1795891865.4860618,
+          "final": 1795891865.4860618,
+          "first_sample_index": 0
+        },
+        "vllm:kv_offload_total_time_total{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"CPU_to_GPU\"}": {
+          "baseline": 0.6040770162343979,
+          "final": 4.849182983279229,
+          "first_sample_index": 0,
+          "delta": 4.245105967044831
+        },
+        "vllm:kv_offload_total_time_total{engine=\"0\",model_name=\"Qwen/Qwen3-32B\",transfer_type=\"GPU_to_CPU\"}": {
+          "baseline": 3.974923748098323,
+          "final": 6.467302889972921,
+          "first_sample_index": 0,
+          "delta": 2.4923791418745984
+        }
+      }
+    }
+  },
+  "external_hit_tokens": 1797376,
+  "external_query_tokens": 2663131,
+  "run": {
+    "config": "C4",
+    "phase": "full",
+    "sessions": 48,
+    "turns": 8,
+    "run_id": "20261128T184543.363766Z",
+    "routing": {
+      "distinct_sessions_served": {
+        "http://localhost:8120": 24,
+        "http://localhost:8121": 24
+      },
+      "final_sticky_assignments": {
+        "http://localhost:8120": [
+          "s48-01",
+          "s48-02",
+          "s48-07",
+          "s48-08",
+          "s48-09",
+          "s48-10",
+          "s48-11",
+          "s48-12",
+          "s48-16",
+          "s48-20",
+          "s48-21",
+          "s48-22",
+          "s48-23",
+          "s48-26",
+          "s48-27",
+          "s48-29",
+          "s48-31",
+          "s48-36",
+          "s48-37",
+          "s48-39",
+          "s48-42",
+          "s48-44",
+          "s48-45",
+          "s48-46"
+        ],
+        "http://localhost:8121": [
+          "s48-00",
+          "s48-03",
+          "s48-04",
+          "s48-05",
+          "s48-06",
+          "s48-13",
+          "s48-14",
+          "s48-15",
+          "s48-17",
+          "s48-18",
+          "s48-19",
+          "s48-24",
+          "s48-25",
+          "s48-28",
+          "s48-30",
+          "s48-32",
+          "s48-33",
+          "s48-34",
+          "s48-35",
+          "s48-38",
+          "s48-40",
+          "s48-41",
+          "s48-43",
+          "s48-47"
+        ]
+      },
+      "assigned_sessions": {
+        "http://localhost:8120": 24,
+        "http://localhost:8121": 24
+      }
+    },
+    "router_mode": "sticky",
+    "replicas": [
+      "http://localhost:8120",
+      "http://localhost:8121"
+    ],
+    "model": "Qwen/Qwen3-32B",
+    "replica_gpus": {
+      "http://localhost:8120": 2,
+      "http://localhost:8121": 3
+    },
+    "revision": "9216db5781bf21249d130ec9da846c4624c16137",
+    "vllm_version": "0.21.0",
+    "seed": 0,
+    "calibration": {
+      "system": {
+        "words": 1998,
+        "sample_tokens": 2048,
+        "target_tokens": 2048
+      },
+      "task": {
+        "words": 1006,
+        "sample_tokens": 1024,
+        "target_tokens": 1024
+      },
+      "tool": {
+        "words": 2021,
+        "sample_tokens": 2048,
+        "target_tokens": 2048
+      }
+    },
+    "attempted": 384,
+    "errors": 0,
+    "status": "complete",
+    "stop_reasons": [],
+    "elapsed_seconds": 173.2837858730927
+  },
+  "path": "results/C4/full-S48-T8-20261128T185725.201438Z/run.json",
+  "first_p50": 2.3650710112415254,
+  "first_p95": 2.9728096541948617,
+  "later_p50": 3.421986802946776,
+  "later_p95": 14.847356647951528,
+  "e2e_p95": 30.763043193565682,
+  "valid": true,
+  "counter_increases": {
+    "vllm:num_preemptions_total": 7,
+    "vllm:prefix_cache_hits_total": 8932528,
+    "vllm:prefix_cache_queries_total": 42819078
+  },
+  "preemptions": 7,
+  "request_hit_pct": 80.1180394881128,
+  "prefix_hit_pct": 20.861093739570947,
+  "prefix_hit_rate": 0.20861093739570946,
+  "peak_kv": 0.9993627732109858,
+  "peak_waiting": 13.0,
+  "peak_running": {
+    "http://localhost:8120": 24.0,
+    "http://localhost:8121": 24.0
+  },
+  "context_max": 19911,
+  "context_min": 19594,
+  "by_turn": {
+    "1": {
+      "http://localhost:8120": 24,
+      "http://localhost:8121": 24
+    },
+    "2": {
+      "http://localhost:8121": 24,
+      "http://localhost:8120": 24
+    },
+    "3": {
+      "http://localhost:8120": 24,
+      "http://localhost:8121": 24
+    },
+    "4": {
+      "http://localhost:8120": 24,
+      "http://localhost:8121": 24
+    },
+    "5": {
+      "http://localhost:8120": 24,
+      "http://localhost:8121": 24
+    },
+    "6": {
+      "http://localhost:8120": 24,
+      "http://localhost:8121": 24
+    },
+    "7": {
+      "http://localhost:8120": 24,
+      "http://localhost:8121": 24
+    },
+    "8": {
+      "http://localhost:8120": 24,
+      "http://localhost:8121": 24
+    }
+  },
+  "turns_path": "results/C4/full-S48-T8-20261128T185725.201438Z/turns.jsonl",
+  "metrics_path": "results/C4/full-S48-T8-20261128T185725.201438Z/metrics.jsonl"
+}
